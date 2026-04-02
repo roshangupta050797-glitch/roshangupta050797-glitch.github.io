@@ -1,137 +1,109 @@
 
-<a href="index.html">Home</a> |
-<a href="about.html">About</a> |
-<a href="contact.html">Contact</a> |
-<a href="privacy.html">Privacy Policy</a>
-<hr>
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>Ramayan Kirana Wholesale</title>
+<title>रामायण किराना – होलसेल</title>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6027340707128536"
-     crossorigin="anonymous"></script>
+crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
   margin: 0;
-  background: #f5f5f5;
+  background: #f4f4f4;
 }
 
 .header {
   background: #1b5e20;
   color: white;
   text-align: center;
-  padding: 20px 10px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.header img {
-  width: 200px;
-  border-radius: 10px;
+  padding: 15px;
 }
 
 .offer {
   background: #ffeb3b;
   text-align: center;
-  padding: 12px;
+  padding: 10px;
   font-weight: bold;
-  font-size: 16px;
-  box-shadow: inset 0 -2px #ccc;
 }
 
 .search-box {
-  padding: 15px;
+  padding: 10px;
   text-align: center;
   background: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 input {
   width: 90%;
-  padding: 12px;
+  padding: 10px;
   font-size: 16px;
-  border-radius: 25px;
+  border-radius: 5px;
   border: 1px solid #ccc;
-  outline: none;
-  transition: 0.3s;
-}
-
-input:focus {
-  border-color: #2e7d32;
-  box-shadow: 0 0 5px #2e7d32;
 }
 
 .container {
-  padding: 15px;
-  max-width: 800px;
-  margin: auto;
+  padding: 10px;
 }
 
 .category-button {
-  background: #2e7d32;
+  background: linear-gradient(90deg, #2e7d32, #4caf50);
   color: white;
-  padding: 12px 15px;
-  margin-top: 12px;
+  padding: 12px;
+  margin-top: 10px;
   border-radius: 8px;
   border: none;
   width: 100%;
   cursor: pointer;
-  font-size: 17px;
+  font-size: 16px;
   text-align: left;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: 0.3s;
+  transition: background 0.3s;
 }
 
 .category-button:hover {
-  background: #1b5e20;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  background: linear-gradient(90deg, #4caf50, #66bb6a);
 }
 
-.category-button::after {
-  content: '▼';
-  font-size: 14px;
-  transition: 0.3s;
-}
-
-.category-button.active::after {
-  transform: rotate(-180deg);
-}
-
-.category-products {
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-  max-height: 1000px; /* initially all open */
+.arrow {
+  transition: transform 0.3s;
 }
 
 .product {
   background: white;
-  margin: 6px 0;
-  padding: 12px;
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  font-size: 15px;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.category-products {
+  display: none;
+  padding-left: 10px;
 }
 
 .footer {
   background: #1b5e20;
   color: white;
   text-align: center;
-  padding: 20px;
-  margin-top: 25px;
-  box-shadow: 0 -3px 6px rgba(0,0,0,0.1);
+  padding: 15px;
+  margin-top: 20px;
 }
 
-button:focus {
-  outline: none;
+@media (max-width: 600px){
+  .category-button {
+    font-size: 14px;
+  }
+  input {
+    font-size: 14px;
+  }
 }
 </style>
 </head>
-
 <body>
-<div id="cookie-banner" style="position:fixed;bottom:0;left:0;width:100%;background:#000;color:#fff;padding:10px;text-align:center; z-index:100;">
+
+<div id="cookie-banner" style="position:fixed;bottom:0;left:0;width:100%;background:#000;color:#fff;padding:10px;text-align:center;z-index:9999;">
   This site uses cookies to show ads. 
   <button onclick="acceptCookies()" style="padding:5px 10px;">Accept</button>
 </div>
@@ -147,7 +119,7 @@ if(localStorage.getItem("cookiesAccepted")) {
 </script>
 
 <div class="header">
-  <img src="logo.png" alt="Logo">
+  <img src="logo.png" alt="Logo" style="width:200px;">
   <h2>🛍️ रामायण किराना – होलसेल एवं रिटेल स्टोर</h2>
   <p>सबसे सस्ता - सबसे अच्छा</p>
 </div>
@@ -166,95 +138,95 @@ if(localStorage.getItem("cookiesAccepted")) {
 
 <div class="container">
 
-<!-- Category: दालें व अनाज -->
-<button class="category-button" onclick="toggleCategory(this)">🫘 दालें व अनाज</button>
+<!-- Category 1 -->
+<button class="category-button" onclick="toggleCategory(this)">🫘 दालें व अनाज <span class="arrow">▶</span></button>
 <div class="category-products">
-<div class="product">रहर दाल (मयूर कला) - ₹110/kg</div>
-<div class="product">चना दाल - ₹70/kg</div>
-<div class="product">चना - ₹63/kg</div>
-<div class="product">मटर - ₹50/kg</div>
-<div class="product">मूंगफली दाना - ₹120/kg</div>
-<div class="product">कबूली चना - ₹75/kg</div>
+  <div class="product">रहर दाल (मयूर कला) - ₹110/kg</div>
+  <div class="product">चना दाल - ₹70/kg</div>
+  <div class="product">चना - ₹63/kg</div>
+  <div class="product">मटर - ₹50/kg</div>
+  <div class="product">मूंगफली दाना - ₹120/kg</div>
+  <div class="product">कबूली चना - ₹75/kg</div>
 </div>
 
-<!-- Category: आटा, मैदा, सूजी व पशु चारा -->
-<button class="category-button" onclick="toggleCategory(this)">आटा, मैदा, सूजी व पशु चारा</button>
+<!-- Category 2 -->
+<button class="category-button" onclick="toggleCategory(this)">आटा, मैदा, सूजी व पशु चारा <span class="arrow">▶</span></button>
 <div class="category-products">
-<div class="product">आटा - ₹28/kg</div>
-<div class="product">मैदा - ₹29/kg</div>
-<div class="product">सूजी - ₹30/kg</div>
-<div class="product">चोकर (29kg नेट) - ₹820/बोरी</div>
+  <div class="product">आटा - ₹28/kg</div>
+  <div class="product">मैदा - ₹29/kg</div>
+  <div class="product">सूजी - ₹30/kg</div>
+  <div class="product">चोकर (29kg नेट) - ₹820/बोरी</div>
 </div>
 
-<!-- Category: सब्ज़ियां व मसाले -->
-<button class="category-button" onclick="toggleCategory(this)">🥔 सब्ज़ियां व मसाले</button>
+<!-- Category 3 -->
+<button class="category-button" onclick="toggleCategory(this)">🥔 सब्ज़ियां व मसाले <span class="arrow">▶</span></button>
 <div class="category-products">
-<div class="product">आलू लाल - ₹13/kg</div>
-<div class="product">आलू सफेद - ₹11/kg</div>
-<div class="product">प्याज - ₹20/kg</div>
-<div class="product">लहसुन (बड़ा) - ₹50/kg</div>
-<div class="product">जीरा - ₹24/100g</div>
-<div class="product">काली मिर्च - ₹76/100g</div>
-<div class="product">प्याज बंगाली- ₹15/kg</div>
-<div class="product">टाटा नमक mrp ₹30 - ₹24/kg</div>
+  <div class="product">आलू लाल - ₹13/kg</div>
+  <div class="product">आलू सफेद - ₹11/kg</div>
+  <div class="product">प्याज - ₹20/kg</div>
+  <div class="product">लहसुन (बड़ा) - ₹50/kg</div>
+  <div class="product">जीरा - ₹24/100g</div>
+  <div class="product">काली मिर्च - ₹76/100g</div>
+  <div class="product">प्याज बंगाली- ₹15/kg</div>
+  <div class="product">टाटा नमक mrp ₹30 - ₹24/kg</div>
 </div>
 
-<!-- Category: तेल व घी -->
-<button class="category-button" onclick="toggleCategory(this)">🛢️ तेल व घी</button>
+<!-- Category 4 -->
+<button class="category-button" onclick="toggleCategory(this)">🛢️ तेल व घी <span class="arrow">▶</span></button>
 <div class="category-products">
-<div class="product">बैल कोल्हू सरसों तेल - ₹173/L</div>
-<div class="product">किंग सरसों तेल - ₹158/L</div>
-<div class="product">फॉर्च्यून रिफाइंड तेल - ₹145/L</div>
-<div class="product">पाम ऑयल - ₹106/L</div>
+  <div class="product">बैल कोल्हू सरसों तेल - ₹173/L</div>
+  <div class="product">किंग सरसों तेल - ₹158/L</div>
+  <div class="product">फॉर्च्यून रिफाइंड तेल - ₹145/L</div>
+  <div class="product">पाम ऑयल - ₹106/L</div>
 </div>
 
-<!-- Category: मिठाई व नाश्ता -->
-<button class="category-button" onclick="toggleCategory(this)">मिठाई व नाश्ता</button>
+<!-- Category 5 -->
+<button class="category-button" onclick="toggleCategory(this)">मिठाई व नाश्ता <span class="arrow">▶</span></button>
 <div class="category-products">
-<div class="product">मीठा - ₹49/kg</div>
-<div class="product">चिवड़ा - ₹36/kg</div>
-<div class="product">चीनी - ₹45/kg</div>
+  <div class="product">मीठा - ₹49/kg</div>
+  <div class="product">चिवड़ा - ₹36/kg</div>
+  <div class="product">चीनी - ₹45/kg</div>
 </div>
 
-<!-- Category: चाय व बिस्किट -->
-<button class="category-button" onclick="toggleCategory(this)">चाय व बिस्किट</button>
+<!-- Category 6 -->
+<button class="category-button" onclick="toggleCategory(this)">चाय व बिस्किट <span class="arrow">▶</span></button>
 <div class="category-products">
-<div class="product">ताज़ा चाय ₹25 वाला - ₹22</div>
-<div class="product">ताज़ा चाय (250g) - ₹44</div>
-<div class="product">बटर बिस्किट ₹20 वाला - ₹16</div>
-<div class="product">गूगली बिस्किट ₹35 वाला - ₹30.50</div>
-<div class="product">रस्क ₹20 वाला - ₹17</div>
+  <div class="product">ताज़ा चाय ₹25 वाला - ₹22</div>
+  <div class="product">ताज़ा चाय (250g) - ₹44</div>
+  <div class="product">बटर बिस्किट ₹20 वाला - ₹16</div>
+  <div class="product">गूगली बिस्किट ₹35 वाला - ₹30.50</div>
+  <div class="product">रस्क ₹20 वाला - ₹17</div>
 </div>
 
-<!-- Category: मैगी व पास्ता -->
-<button class="category-button" onclick="toggleCategory(this)">मैगी व पास्ता</button>
+<!-- Category 7 -->
+<button class="category-button" onclick="toggleCategory(this)">मैगी व पास्ता <span class="arrow">▶</span></button>
 <div class="category-products">
-<div class="product">मैगी ₹15 वाला - ₹13</div>
-<div class="product">मैगी ₹7 वाला - ₹6.50</div>
-<div class="product">पास्ता - ₹44/kg</div>
+  <div class="product">मैगी ₹15 वाला - ₹13</div>
+  <div class="product">मैगी ₹7 वाला - ₹6.50</div>
+  <div class="product">पास्ता - ₹44/kg</div>
 </div>
 
-<!-- Category: हाइजीन व घरेलू उत्पाद -->
-<button class="category-button" onclick="toggleCategory(this)">🧼 हाइजीन व घरेलू उत्पाद</button>
+<!-- Category 8 -->
+<button class="category-button" onclick="toggleCategory(this)">🧼 हाइजीन व घरेलू उत्पाद <span class="arrow">▶</span></button>
 <div class="category-products">
-<div class="product">व्हील डिटर्जेंट (1kg) - ₹68</div>
-<div class="product">क्लिनिक प्लस शैम्पू (16 pcs) - ₹11.50</div>
-<div class="product">साबुन ₹10 वाला - ₹8.50</div>
-<div class="product">ऐम/होमलाइट माचिस (बंडल) - ₹7</div>
-<div class="product">गोल्डी ₹1 वाला (10 में 12) - ₹10</div>
+  <div class="product">व्हील डिटर्जेंट (1kg) - ₹68</div>
+  <div class="product">क्लिनिक प्लस शैम्पू (16 pcs) - ₹11.50</div>
+  <div class="product">साबुन ₹10 वाला - ₹8.50</div>
+  <div class="product">ऐम/होमलाइट माचिस (बंडल) - ₹7</div>
+  <div class="product">गोल्डी ₹1 वाला (10 में 12) - ₹10</div>
 </div>
 
-<!-- Category: पैक मसाले -->
-<button class="category-button" onclick="toggleCategory(this)">पैक मसाले</button>
+<!-- Category 9 -->
+<button class="category-button" onclick="toggleCategory(this)">पैक मसाले <span class="arrow">▶</span></button>
 <div class="category-products">
-<div class="product">एवररेस्ट मसाला ₹5 वाला - ₹3.75</div>
-<div class="product">राजेश मीट मसाला ₹5 वाला - ₹3.75</div>
+  <div class="product">एवररेस्ट मसाला ₹5 वाला - ₹3.75</div>
+  <div class="product">राजेश मीट मसाला ₹5 वाला - ₹3.75</div>
 </div>
 
 </div>
 
 <div class="footer">
-  <h3> ऑर्डर देने के लिए संपर्क करें</h3>
+  <h3>ऑर्डर देने के लिए संपर्क करें</h3>
   <p>रामायण किराना होलसेल, भटनी</p>
   <p>8574788904</p>
   <p>भटनी क्षेत्र में होम डिलीवरी उपलब्ध है</p>
@@ -264,28 +236,37 @@ if(localStorage.getItem("cookiesAccepted")) {
 <script>
 function searchProduct() {
   let input = document.getElementById("search").value.toLowerCase();
-  let items = document.getElementsByClassName("product");
+  let categories = document.getElementsByClassName("category-products");
+  let buttons = document.getElementsByClassName("category-button");
 
-  for (let i = 0; i < items.length; i++) {
-    let text = items[i].innerText.toLowerCase();
-    items[i].style.display = text.includes(input) ? "" : "none";
+  for (let i = 0; i < categories.length; i++) {
+    let products = categories[i].getElementsByClassName("product");
+    let match = false;
+    for (let j = 0; j < products.length; j++) {
+      let text = products[j].innerText.toLowerCase();
+      if(text.includes(input)){
+        products[j].style.display = "";
+        match = true;
+      } else {
+        products[j].style.display = "none";
+      }
+    }
+    categories[i].style.display = match ? "block" : "none";
+    // rotate arrow
+    let arrow = buttons[i].querySelector(".arrow");
+    arrow.style.transform = match ? "rotate(90deg)" : "rotate(0deg)";
   }
 }
 
 function toggleCategory(button) {
-  button.classList.toggle("active");
   let nextDiv = button.nextElementSibling;
-  if(nextDiv.style.maxHeight && nextDiv.style.maxHeight !== "0px") {
-    nextDiv.style.maxHeight = "0px";
+  if(nextDiv.style.display === "block"){
+    nextDiv.style.display = "none";
+    button.querySelector(".arrow").style.transform = "rotate(0deg)";
   } else {
-    nextDiv.style.maxHeight = nextDiv.scrollHeight + "px";
+    nextDiv.style.display = "block";
+    button.querySelector(".arrow").style.transform = "rotate(90deg)";
   }
-}
-
-// By default, all categories open
-let allCategories = document.getElementsByClassName("category-products");
-for(let i=0;i<allCategories.length;i++){
-  allCategories[i].style.maxHeight = allCategories[i].scrollHeight + "px";
 }
 </script>
 
