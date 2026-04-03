@@ -1,0 +1,306 @@
+04.03 3:25 PM
+products-available.html
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>उपलब्ध प्रोडक्ट्स | रामायण किराना – होलसेल</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:'Poppins',sans-serif;
+      background:#eef2e6;
+      color:#333;
+    }
+
+    nav{
+      text-align:center;
+      padding:12px 8px;
+      background:#f5f5f5;
+      font-size:16px;
+      line-height:1.8;
+    }
+
+    nav a{
+      margin:0 8px;
+      text-decoration:none;
+      color:#1b5e20;
+      font-weight:600;
+      display:inline-block;
+    }
+
+    nav a:hover{
+      color:#4caf50;
+    }
+
+    .header{
+      background:#1b5e20;
+      color:white;
+      text-align:center;
+      padding:24px 12px;
+    }
+
+    .header h1{
+      margin:0;
+      font-size:30px;
+      line-height:1.4;
+    }
+
+    .header p{
+      margin-top:8px;
+      font-size:16px;
+    }
+
+    .container{
+      max-width:950px;
+      margin:auto;
+      padding:16px 12px 30px;
+    }
+
+    .search-box{
+      margin-bottom:18px;
+      text-align:center;
+    }
+
+    .search-box input{
+      width:100%;
+      max-width:900px;
+      padding:14px;
+      font-size:17px;
+      border:1px solid #ccc;
+      border-radius:10px;
+      outline:none;
+    }
+
+    .category{
+      background:#ffffff;
+      border-radius:16px;
+      padding:16px;
+      margin-bottom:16px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    }
+
+    .category h2{
+      margin:0 0 12px 0;
+      font-size:22px;
+      color:#1b5e20;
+      border-bottom:2px solid #dce8d7;
+      padding-bottom:8px;
+    }
+
+    .products{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:10px;
+    }
+
+    .product{
+      background:#f8fbf5;
+      border:1px solid #dfe9d9;
+      border-radius:12px;
+      padding:12px;
+      font-size:17px;
+      font-weight:600;
+      line-height:1.5;
+    }
+
+    .footer{
+      background:#1b5e20;
+      color:white;
+      text-align:center;
+      padding:20px 10px;
+      margin-top:30px;
+    }
+
+    .footer p, .footer h3{
+      margin:6px 0;
+      line-height:1.6;
+    }
+
+    @media(max-width:600px){
+      .header h1{
+        font-size:24px;
+      }
+
+      .header p{
+        font-size:14px;
+      }
+
+      .category h2{
+        font-size:20px;
+      }
+
+      .product{
+        font-size:16px;
+      }
+
+      .search-box input{
+        font-size:16px;
+      }
+
+      nav{
+        font-size:14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="products-available.html">Products Available</a> |
+    <a href="about.html">About</a> |
+    <a href="contact.html">Contact</a> |
+    <a href="privacy.html">Privacy Policy</a>
+  </nav>
+  <hr>
+
+  <div class="header">
+    <h1> उपलब्ध प्रोडक्ट्स</h1>
+    <p>रामायण किराना – होलसेल में उपलब्ध सामान, category wise</p>
+  </div>
+
+  <div class="container">
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="प्रोडक्ट खोजें..." onkeyup="searchProducts()">
+    </div>
+
+    <div class="category">
+      <h2>🫘 दालें, चावल व अनाज</h2>
+      <div class="products">
+        <div class="product">रहर दाल (मयूर कला)</div>
+        <div class="product">चना दाल</div>
+        <div class="product">चना</div>
+        <div class="product">मटर</div>
+        <div class="product">मूंगफली दाना</div>
+        <div class="product">कबूली चना</div>
+        <div class="product">हॉफ स्टीम चावल (याराना)</div>
+        <div class="product">संभा चावल प्रतिज्ञा</div>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2>आटा, मैदा, सूजी व पशु चारा</h2>
+      <div class="products">
+        <div class="product">आटा</div>
+        <div class="product">मैदा</div>
+        <div class="product">सूजी</div>
+        <div class="product">चोकर</div>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2>🥔 सब्ज़ियां व मसाले</h2>
+      <div class="products">
+        <div class="product">आलू लाल</div>
+        <div class="product">आलू सफेद</div>
+        <div class="product">प्याज</div>
+        <div class="product">लहसुन (बड़ा)</div>
+        <div class="product">जीरा</div>
+        <div class="product">काली मिर्च</div>
+        <div class="product">प्याज बंगाली</div>
+        <div class="product">टाटा नमक</div>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2>🛢️ तेल व घी</h2>
+      <div class="products">
+        <div class="product">बैल कोल्हू सरसों तेल</div>
+        <div class="product">किंग सरसों तेल</div>
+        <div class="product">फॉर्च्यून रिफाइंड तेल</div>
+        <div class="product">पाम ऑयल</div>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2>मिठाई व नाश्ता</h2>
+      <div class="products">
+        <div class="product">मीठा</div>
+        <div class="product">चिवड़ा</div>
+        <div class="product">चीनी</div>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2>चाय व बिस्किट</h2>
+      <div class="products">
+        <div class="product">ताज़ा चाय ₹25 वाला</div>
+        <div class="product">ताज़ा चाय (250g)</div>
+        <div class="product">बटर बिस्किट ₹20 वाला</div>
+        <div class="product">गूगली बिस्किट ₹35 वाला</div>
+        <div class="product">रस्क ₹20 वाला</div>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2>मैगी व पास्ता</h2>
+      <div class="products">
+        <div class="product">मैगी ₹15 वाला</div>
+        <div class="product">मैगी ₹7 वाला</div>
+        <div class="product">पास्ता</div>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2>🧼 हाइजीन व घरेलू उत्पाद</h2>
+      <div class="products">
+        <div class="product">व्हील डिटर्जेंट (1kg)</div>
+        <div class="product">क्लिनिक प्लस शैम्पू (16 pcs)</div>
+        <div class="product">साबुन ₹10 वाला</div>
+        <div class="product">ऐम/होमलाइट माचिस (बंडल)</div>
+        <div class="product">गोल्डी ₹1 वाला (10 में 12)</div>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2>पैक मसाले</h2>
+      <div class="products">
+        <div class="product">एवररेस्ट मसाला ₹5 वाला</div>
+        <div class="product">राजेश मीट मसाला ₹5 वाला</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <h3>रामायण किराना – होलसेल</h3>
+    <p>भटनी</p>
+    <p>8574788904</p>
+    <p>उपलब्ध सामान की जानकारी के लिए संपर्क करें</p>
+  </div>
+
+  <script>
+    function searchProducts() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const categories = document.querySelectorAll(".category");
+
+      categories.forEach(function(category) {
+        const products = category.querySelectorAll(".product");
+        let found = false;
+
+        products.forEach(function(product) {
+          const text = product.innerText.toLowerCase();
+          if (text.includes(input)) {
+            product.style.display = "block";
+            found = true;
+          } else {
+            product.style.display = "none";
+          }
+        });
+
+        category.style.display = found ? "block" : "none";
+      });
+    }
+  </script>
+
+</body>
+</html>
