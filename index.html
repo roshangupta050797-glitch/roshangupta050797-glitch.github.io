@@ -733,6 +733,140 @@
       <div class="product">राजेश मीट मसाला ₹5 वाला - ₹3.75</div>
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6027340707128536" data-ad-slot="9999999999" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
+    <style>
+  .rate-form-box {
+    background: #ffffff;
+    margin: 12px;
+    padding: 18px;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border: 1px solid #e6e6e6;
+  }
+
+  .rate-form-box h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    color: #1b5e20;
+    text-align: center;
+  }
+
+  .rate-form-box p {
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .rate-alert {
+    background: #fff8e1;
+    color: #bf360c;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .rate-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rate-form input,
+  .rate-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #cfcfcf;
+    border-radius: 12px;
+    font-size: 15px;
+    outline: none;
+    background: #fff;
+  }
+
+  .rate-form input:focus,
+  .rate-form textarea:focus {
+    border-color: #25D366;
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.12);
+  }
+
+  .rate-form textarea {
+    min-height: 90px;
+    resize: vertical;
+  }
+
+  .rate-submit-btn {
+    background: #25D366;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .rate-note {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #666;
+    text-align: center;
+  }
+</style>
+
+<div class="rate-form-box">
+  <h2>RN Kirana Wholesale</h2>
+  <p>किसी भी सामान का ताज़ा rate जानने के लिए नीचे form भरें</p>
+
+  <div class="rate-alert">
+    📦 जिस सामान का भाव जानना हो, उसका नाम भरें — आपका message सीधे WhatsApp पर आ जाएगा
+  </div>
+
+  <form id="rateInquiryForm" class="rate-form">
+    <input type="text" id="custName" placeholder="अपना नाम लिखें" required>
+    <input type="text" id="custAddress" placeholder="गांव / शहर / पता लिखें" required>
+    <input type="tel" id="custPhone" placeholder="मोबाइल नंबर लिखें" required>
+    <input type="text" id="productName" placeholder="किस सामान का rate जानना है?" required>
+    <textarea id="extraInfo" placeholder="चाहें तो quantity या और जानकारी लिखें (जैसे 5kg, 1 बोरी, 10 पीस)"></textarea>
+    <button type="submit" class="rate-submit-btn">WhatsApp पर Rate पूछें</button>
+  </form>
+
+  <div class="rate-note">
+    उदाहरण: आलू, प्याज, चना दाल, सरसों तेल, नमक, मैगी, बिस्किट आदि
+  </div>
+</div>
+
+<script>
+  document.getElementById("rateInquiryForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    var name = document.getElementById("custName").value.trim();
+    var address = document.getElementById("custAddress").value.trim();
+    var phone = document.getElementById("custPhone").value.trim();
+    var product = document.getElementById("productName").value.trim();
+    var extraInfo = document.getElementById("extraInfo").value.trim();
+
+    if (!name || !address || !phone || !product) {
+      alert("कृपया नाम, पता, मोबाइल नंबर और सामान का नाम भरें");
+      return;
+    }
+
+    var message =
+      "नमस्ते 🙏%0A%0A" +
+      "मुझे एक सामान का rate जानना है.%0A%0A" +
+      "नाम: " + name + "%0A" +
+      "पता: " + address + "%0A" +
+      "मोबाइल नंबर: " + phone + "%0A" +
+      "सामान का नाम: " + product + "%0A" +
+      "अतिरिक्त जानकारी: " + (extraInfo ? extraInfo : "नहीं") + "%0A%0A" +
+      "कृपया इसका current wholesale rate बताइए।";
+
+    window.open("https://wa.me/918574788904?text=" + message, "_blank");
+  });
+</script>
 
   </div>
   <div class="bottom-slider">
