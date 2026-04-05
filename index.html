@@ -444,6 +444,81 @@
     height: 240px !important;
   }
 }
+    .bottom-slider {
+  position: relative;
+  width: 92%;
+  margin: 20px auto;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+.bottom-slide {
+  display: none;
+}
+
+.bottom-slide.active {
+  display: block;
+}
+
+.bottom-slide img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.bottom-prev,
+.bottom-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.45);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.bottom-prev {
+  left: 10px;
+}
+
+.bottom-next {
+  right: 10px;
+}
+
+.bottom-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.bottom-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin: 0 4px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.bottom-dot.active {
+  background: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .bottom-slide img {
+    height: 150px;
+  }
+}
 </style>
   </style>
 </head>
@@ -655,6 +730,47 @@
     </div>
 
   </div>
+  <div class="bottom-slider">
+  <div class="bottom-slide active">
+    <img src="offer1.jpg" alt="Offer 1">
+  </div>
+  <div class="bottom-slide">
+    <img src="offer2.jpg" alt="Offer 2">
+  </div>
+  <div class="bottom-slide">
+    <img src="offer3.jpg" alt="Offer 3">
+  </div>
+  <div class="bottom-slide">
+    <img src="offer4.jpg" alt="Offer 4">
+  </div>
+  <div class="bottom-slide">
+    <img src="offer5.jpg" alt="Offer 5">
+  </div>
+  <div class="bottom-slide">
+    <img src="offer6.jpg" alt="Offer 6">
+  </div>
+  <div class="bottom-slide">
+    <img src="offer7.jpg" alt="Offer 7">
+  </div>
+  <div class="bottom-slide">
+    <img src="offer8.jpg" alt="Offer 8">
+  </div>
+
+  <button class="bottom-prev" onclick="changeBottomSlide(-1)">❮</button>
+  <button class="bottom-next" onclick="changeBottomSlide(1)">❯</button>
+
+  <div class="bottom-dots">
+    <span class="bottom-dot active" onclick="setBottomSlide(0)"></span>
+    <span class="bottom-dot" onclick="setBottomSlide(1)"></span>
+    <span class="bottom-dot" onclick="setBottomSlide(2)"></span>
+    <span class="bottom-dot" onclick="setBottomSlide(3)"></span>
+    <span class="bottom-dot" onclick="setBottomSlide(4)"></span>
+    <span class="bottom-dot" onclick="setBottomSlide(5)"></span>
+    <span class="bottom-dot" onclick="setBottomSlide(6)"></span>
+    <span class="bottom-dot" onclick="setBottomSlide(7)"></span>
+  </div>
+</div>
+  
 
   <div class="footer">
     <h3>ऑर्डर देने के लिए संपर्क करें</h3>
@@ -780,5 +896,41 @@ function autoSlide() {
 showSlide(slideIndex);
 setInterval(autoSlide, 6000);
 </script>
+  <script>
+let bottomSlideIndex = 0;
+const bottomSlides = document.querySelectorAll(".bottom-slide");
+const bottomDots = document.querySelectorAll(".bottom-dot");
+
+function showBottomSlide(index) {
+  if (index >= bottomSlides.length) bottomSlideIndex = 0;
+  if (index < 0) bottomSlideIndex = bottomSlides.length - 1;
+
+  bottomSlides.forEach((slide) => slide.classList.remove("active"));
+  bottomDots.forEach((dot) => dot.classList.remove("active"));
+
+  bottomSlides[bottomSlideIndex].classList.add("active");
+  bottomDots[bottomSlideIndex].classList.add("active");
+}
+
+function changeBottomSlide(step) {
+  bottomSlideIndex += step;
+  if (bottomSlideIndex >= bottomSlides.length) bottomSlideIndex = 0;
+  if (bottomSlideIndex < 0) bottomSlideIndex = bottomSlides.length - 1;
+  showBottomSlide(bottomSlideIndex);
+}
+
+function setBottomSlide(index) {
+  bottomSlideIndex = index;
+  showBottomSlide(bottomSlideIndex);
+}
+
+setInterval(() => {
+  bottomSlideIndex++;
+  if (bottomSlideIndex >= bottomSlides.length) bottomSlideIndex = 0;
+  showBottomSlide(bottomSlideIndex);
+}, 3500);
+
+showBottomSlide(bottomSlideIndex);
+  </script>
 </body>
 </html>
