@@ -611,6 +611,122 @@
     left: 100%;
   }
 }
+    .intro-section {
+  padding: 18px 12px 10px;
+  background: linear-gradient(180deg, #f8fff9 0%, #eef7f0 100%);
+}
+
+.intro-box {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 22px 18px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e3efe5;
+  text-align: center;
+}
+
+.intro-tag {
+  display: inline-block;
+  background: #e6f4ea;
+  color: #0b7a3b;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.intro-box h2 {
+  margin: 0 0 14px;
+  font-size: 28px;
+  line-height: 1.3;
+  color: #14532d;
+}
+
+.intro-text {
+  margin: 0 auto 16px;
+  max-width: 760px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333333;
+}
+
+.intro-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.intro-highlights span {
+  background: #f4f8f5;
+  color: #1f2937;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #e5ece7;
+}
+
+.intro-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.intro-btn {
+  text-decoration: none;
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  transition: 0.3s ease;
+}
+
+.primary-btn {
+  background: #0b7a3b;
+  color: #ffffff;
+}
+
+.primary-btn:hover {
+  background: #095f2e;
+}
+
+.secondary-btn {
+  background: #ffffff;
+  color: #0b7a3b;
+  border: 2px solid #0b7a3b;
+}
+
+.secondary-btn:hover {
+  background: #eefaf1;
+}
+
+@media (max-width: 600px) {
+  .intro-box {
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+
+  .intro-box h2 {
+    font-size: 22px;
+  }
+
+  .intro-text {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .intro-btn {
+    width: 100%;
+    max-width: 260px;
+  }
+  }
 </style>
   </style>
 </head>
@@ -646,6 +762,33 @@
   <h2>🛍️ रामायण किराना – होलसेल </h2>
   <p>सबसे सस्ता - सबसे अच्छा</p>
 </div>
+  <section class="intro-section">
+  <div class="intro-box">
+    <p class="intro-tag">Trusted Grocery Wholesale Store in Bhatni</p>
+
+    <h2>रामायण किराना होलसेल में आपका स्वागत है</h2>
+
+    <p class="intro-text">
+      रामायण किराना होलसेल भटनी में स्थित एक भरोसेमंद और लोकप्रिय किराना होलसेल स्टोर है,
+      जहाँ आपको दैनिक उपयोग के सभी आवश्यक सामान उचित, सस्ते और प्रतिस्पर्धी दामों पर मिलते हैं।
+      इस वेबसाइट के माध्यम से हम आपको ताज़ा रेट, विशेष ऑफर, उपलब्ध उत्पादों की जानकारी
+      और आसान संपर्क सुविधा प्रदान करते हैं, ताकि आप अपने घर या दुकान के लिए सही सामान
+      आसानी से चुन सकें।
+    </p>
+
+    <div class="intro-highlights">
+      <span>✔ ताज़ा रेट</span>
+      <span>✔ बेहतर ऑफर</span>
+      <span>✔ होलसेल सुविधा</span>
+      <span>✔ आसान संपर्क</span>
+    </div>
+
+    <div class="intro-buttons">
+      <a href="contact.html" class="intro-btn primary-btn">हमसे संपर्क करें</a>
+      <a href="products-available.html" class="intro-btn secondary-btn">उत्पाद देखें</a>
+    </div>
+  </div>
+</section>
   <!-- Sliding Banner Start -->
 <section class="hero-slider">
   <div class="slides">
