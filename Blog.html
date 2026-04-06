@@ -2,71 +2,173 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>Blog - Ramayan Kirana</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog - Ramayan Kirana Wholesale</title>
 
 <style>
 body {
-  font-family: Arial;
-  background: #f5f5f5;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
   margin: 0;
+  color: #222;
 }
 
 .header {
-  background: #0b7a3b;
+  background: linear-gradient(135deg, #0b7a3b, #13924a);
   color: white;
-  padding: 15px;
+  padding: 28px 16px;
   text-align: center;
 }
 
+.header h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.header p {
+  margin-top: 10px;
+  font-size: 16px;
+  opacity: 0.95;
+}
+
 .container {
-  max-width: 800px;
-  margin: auto;
-  padding: 15px;
+  max-width: 950px;
+  margin: 24px auto;
+  padding: 0 16px 30px;
 }
 
 .blog-card {
   background: white;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 10px;
+  padding: 22px 18px;
+  margin-bottom: 18px;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border-left: 6px solid #0b7a3b;
 }
 
 .blog-card h3 {
   color: #0b7a3b;
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+.blog-card p {
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0 0 16px;
+  color: #333;
 }
 
 .read-btn {
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 4px;
   color: white;
   background: #0b7a3b;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 12px 18px;
+  border-radius: 10px;
   text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.read-btn:hover {
+  background: #095f2e;
+}
+
+.footer {
+  text-align: center;
+  padding: 18px 12px 28px;
+  font-size: 15px;
+}
+
+.footer a {
+  color: #0b7a3b;
+  text-decoration: none;
+  margin: 0 8px;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 22px 14px;
+  }
+
+  .header h1 {
+    font-size: 26px;
+  }
+
+  .header p {
+    font-size: 15px;
+  }
+
+  .container {
+    padding: 0 12px 24px;
+    margin: 18px auto;
+  }
+
+  .blog-card {
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+
+  .blog-card h3 {
+    font-size: 21px;
+  }
+
+  .blog-card p {
+    font-size: 17px;
+    line-height: 1.9;
+  }
+
+  .read-btn {
+    display: block;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 17px;
+    padding: 13px 16px;
+  }
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="header">
-  <h1>📚 Blog</h1>
+  <h1>📚 रामायण किराना ब्लॉग</h1>
+  <p>दैनिक किराना जानकारी, ऑफर और उपयोगी लेख</p>
 </div>
 
 <div class="container">
 
   <div class="blog-card">
     <h3>आलू और प्याज के दाम बढ़ने वाले हैं?</h3>
-    <p>बाजार में हलचल है... आगे कीमत बढ़ सकती है।</p>
+    <p>
+      बाजार में आलू और प्याज की कीमतों में हलचल देखी जा रही है।
+      आने वाले दिनों में इनके दाम बढ़ सकते हैं, इसलिए सही समय पर खरीदारी करना फायदेमंद हो सकता है।
+    </p>
     <a class="read-btn" href="blog1.html">पूरा पढ़ें</a>
   </div>
-    <div class="blog-card">
-    <h3>आलू और प्याज के दाम बढ़ने वाले हैं?</h3>
-    <p>बाजार में हलचल है... आगे कीमत बढ़ सकती है।</p>
-    <a class="read-btn" href="blog1.html">पूरा पढ़ें</a>
-    </div>
 
+  <div class="blog-card">
+    <h3>कौन सा तेल ज्यादा फायदेमंद है?</h3>
+    <p>
+      सरसों तेल, रिफाइंड तेल और अन्य खाने के तेलों का उपयोग अलग-अलग जरूरतों के अनुसार होता है।
+      सही तेल चुनने से स्वाद और स्वास्थ्य दोनों बेहतर रह सकते हैं।
+    </p>
+    <a class="read-btn" href="blog2.html">पूरा पढ़ें</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  <a href="index.html">Home</a> |
+  <a href="about.html">About</a> |
+  <a href="contact.html">Contact</a> |
+  <a href="privacy.html">Privacy Policy</a> |
+  <a href="terms.html">Terms & Conditions</a>
 </div>
 
 </body>
