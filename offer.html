@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offers - Ramayan Kirana Wholesale</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0b7a3b, #159957);
+      color: white;
+      text-align: center;
+      padding: 18px 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      font-size: 14px;
+    }
+
+    .top-nav {
+      background: white;
+      text-align: center;
+      padding: 12px 10px;
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .top-nav a {
+      text-decoration: none;
+      color: #0b7a3b;
+      font-weight: bold;
+      margin: 0 10px;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 15px;
+    }
+
+    .page-title {
+      text-align: center;
+      color: #0b7a3b;
+      font-size: 24px;
+      margin: 10px 0 18px;
+    }
+
+    .categories-grid,
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: 0.25s ease;
+      border: 1px solid #e9e9e9;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      background: #f8f8f8;
+    }
+
+    .card-body {
+      padding: 12px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: bold;
+      color: #0b7a3b;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .card-line {
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .mrp {
+      color: #d32f2f;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: #0b7a3b;
+      font-size: 22px;
+    }
+
+    .back-btn {
+      background: #e53935;
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .back-btn:hover {
+      background: #c62828;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 9999;
+      padding: 16px 10px;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      max-width: 540px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      animation: popup 0.25s ease;
+    }
+
+    @keyframes popup {
+      from {
+        transform: scale(0.94);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.95);
+      color: red;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 36px;
+      text-align: center;
+    }
+
+    .modal-image {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+      background: #f7f7f7;
+    }
+
+    .modal-body {
+      padding: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #fff3cd;
+      color: #8a5b00;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .modal-body h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      color: #0b7a3b;
+      line-height: 1.4;
+    }
+
+    .modal-body p {
+      margin: 8px 0;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .action-btn {
+      flex: 1;
+      min-width: 160px;
+      text-decoration: none;
+      text-align: center;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .whatsapp-btn {
+      background: #25d366;
+      color: white;
+    }
+
+    .call-btn {
+      background: #0b7a3b;
+      color: white;
+    }
+
+    .note-box {
+      background: #fff;
+      border-left: 4px solid #ff9800;
+      padding: 12px;
+      margin: 18px 0;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #333;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    @media (max-width: 1024px) {
+      .categories-grid,
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .categories-grid,
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .card img {
+        height: 150px;
+      }
+
+      .modal-image {
+        height: 230px;
+      }
+
+      .header h1 {
+        font-size: 23px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .categories-grid,
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card img {
+        height: 190px;
+      }
+
+      .modal-image {
+        height: 220px;
+      }
+
+      .top-nav a {
+        display: inline-block;
+        margin: 4px 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>रामायण किराना होलसेल</h1>
+    <p>ऑफर, कैटेगरी और प्रोडक्ट की पूरी जानकारी</p>
+  </div>
+
+  <div class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="offer.html">Offers</a>
+    <a href="products-available.html">Products Available</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="container">
+
+    <h2 class="page-title" id="mainPageTitle">Offer Categories</h2>
+
+    <div class="note-box">
+      किसी भी कैटेगरी पर क्लिक करें। फिर उसके अंदर किसी प्रोडक्ट पर क्लिक करके फोटो, quantity, MRP और description देखें।
+    </div>
+
+    <div class="categories-grid" id="categoriesGrid"></div>
+
+    <div id="productsSection" class="hidden">
+      <div class="section-head">
+        <h2 id="productsTitle">Products</h2>
+        <button class="back-btn" onclick="showCategories()">← Back to Categories</button>
+      </div>
+
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="productModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeProductModal()">&times;</button>
+
+      <img id="modalImage" class="modal-image" src="" alt="">
+
+      <div class="modal-body">
+        <div class="badge">Product Details</div>
+        <h2 id="modalTitle"></h2>
+        <p><strong>Quantity:</strong> <span id="modalQty"></span></p>
+        <p><strong>MRP:</strong> <span id="modalMrp"></span></p>
+        <p><strong>Description:</strong> <span id="modalDesc"></span></p>
+
+        <div class="modal-actions">
+          <a id="whatsappBtn" class="action-btn whatsapp-btn" href="#" target="_blank">WhatsApp पर पूछें</a>
+          <a class="action-btn call-btn" href="tel:8574788904">Call करें</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const whatsappNumber = "918574788904";
+
+    const categoriesData = [
+      {
+        id: "dal-chawal",
+        name: "दालें, चावल व अनाज",
+        image: "images/categories/dal-chawal.jpg",
+        products: [
+          {
+            name: "रहर दाल (मयूर कला)",
+            quantity: "1 kg",
+            mrp: "₹120",
+            image: "images/products/rahar-dal.jpg",
+            description: "अच्छी गुणवत्ता की रहर दाल। रोज़मर्रा के उपयोग के लिए बढ़िया। साफ-सुथरी और स्वादिष्ट।"
+          },
+          {
+            name: "चना दाल",
+            quantity: "1 kg",
+            mrp: "₹78",
+            image: "images/products/chana-dal.jpg",
+            description: "बेहतरीन चना दाल। घर, होटल और दुकान सभी के लिए उपयुक्त।"
+          },
+          {
+            name: "चना",
+            quantity: "1 kg",
+            mrp: "₹70",
+            image: "images/products/chana.jpg",
+            description: "अच्छी क्वालिटी का चना। भूनने, उबालने और अन्य उपयोग के लिए।"
+          },
+          {
+            name: "मटर",
+            quantity: "1 kg",
+            mrp: "₹60",
+            image: "images/products/matar.jpg",
+            description: "साफ और अच्छी गुणवत्ता की सूखी मटर।"
+          }
+        ]
+      },
+      {
+        id: "atta-maida",
+        name: "आटा, मैदा, सूजी",
+        image: "images/categories/atta-maida.jpg",
+        products: [
+          {
+            name: "आटा",
+            quantity: "1 kg",
+            mrp: "₹32",
+            image: "images/products/aata.jpg",
+            description: "रोज़मर्रा के उपयोग का बढ़िया आटा। रोटी और अन्य उपयोग के लिए उपयुक्त।"
+          },
+          {
+            name: "मैदा",
+            quantity: "1 kg",
+            mrp: "₹34",
+            image: "images/products/maida.jpg",
+            description: "अच्छी क्वालिटी का मैदा। बेकरी, पूड़ी और नमकीन के लिए अच्छा।"
+          },
+          {
+            name: "सूजी",
+            quantity: "1 kg",
+            mrp: "₹36",
+            image: "images/products/suji.jpg",
+            description: "उत्तम गुणवत्ता की सूजी। हलवा, उपमा और नाश्ते के लिए उपयुक्त।"
+          }
+        ]
+      },
+      {
+        id: "oil-ghee",
+        name: "तेल व घी",
+        image: "images/categories/oil-ghee.jpg",
+        products: [
+          {
+            name: "सरसों तेल",
+            quantity: "1 Litre",
+            mrp: "₹190",
+            image: "images/products/sarso-tel.jpg",
+            description: "खाने और घरेलू उपयोग के लिए अच्छा सरसों तेल।"
+          },
+          {
+            name: "देसी घी",
+            quantity: "1 Litre",
+            mrp: "₹780",
+            image: "images/products/desi-ghee.jpg",
+            description: "प्रीमियम क्वालिटी का देसी घी। सुगंध और स्वाद दोनों में बढ़िया।"
+          }
+        ]
+      },
+      {
+        id: "masala",
+        name: "पैक मसाले",
+        image: "images/categories/masala.jpg",
+        products: [
+          {
+            name: "हल्दी पाउडर",
+            quantity: "500 g",
+            mrp: "₹160",
+            image: "images/products/haldi.jpg",
+            description: "रंग और स्वाद से भरपूर हल्दी। रसोई के लिए जरूरी मसाला।"
+          },
+          {
+            name: "धनिया पाउडर",
+            quantity: "500 g",
+            mrp: "₹140",
+            image: "images/products/dhaniya.jpg",
+            description: "अच्छी क्वालिटी का धनिया पाउडर। सब्जी और मसालेदार व्यंजनों के लिए।"
+          },
+          {
+            name: "लाल मिर्च पाउडर",
+            quantity: "500 g",
+            mrp: "₹180",
+            image: "images/products/mirch.jpg",
+            description: "तीखापन और रंग देने वाली बढ़िया लाल मिर्च।"
+          }
+        ]
+      },
+      {
+        id: "snacks",
+        name: "नमकीन व बिस्कुट",
+        image: "images/categories/snacks.jpg",
+        products: [
+          {
+            name: "मिक्स नमकीन",
+            quantity: "400 g",
+            mrp: "₹85",
+            image: "images/products/namkeen.jpg",
+            description: "कुरकुरा और स्वादिष्ट नमकीन। चाय के साथ बढ़िया।"
+          },
+          {
+            name: "बिस्कुट पैक",
+            quantity: "200 g",
+            mrp: "₹35",
+            image: "images/products/biscuit.jpg",
+            description: "रोज़मर्रा के उपयोग का अच्छा बिस्कुट पैक।"
+          }
+        ]
+      },
+      {
+        id: "soap-cleaner",
+        name: "साबुन व क्लीनर",
+        image: "images/categories/cleaning.jpg",
+        products: [
+          {
+            name: "बर्तन साफ करने का लिक्विड",
+            quantity: "500 ml",
+            mrp: "₹110",
+            image: "images/products/dishwash.jpg",
+            description: "बर्तनों की सफाई के लिए उपयोगी लिक्विड।"
+          },
+          {
+            name: "फर्श क्लीनर",
+            quantity: "1 Litre",
+            mrp: "₹145",
+            image: "images/products/floor-cleaner.jpg",
+            description: "फर्श की सफाई और अच्छी खुशबू के लिए उपयोगी।"
+          }
+        ]
+      }
+    ];
+
+    const categoriesGrid = document.getElementById("categoriesGrid");
+    const productsSection = document.getElementById("productsSection");
+    const productsGrid = document.getElementById("productsGrid");
+    const productsTitle = document.getElementById("productsTitle");
+    const mainPageTitle = document.getElementById("mainPageTitle");
+
+    function renderCategories() {
+      categoriesGrid.innerHTML = "";
+
+      categoriesData.forEach(category => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.onclick = function () {
+          showProducts(category.id);
+        };
+
+        card.innerHTML = `
+          <img src="${category.image}" alt="${category.name}">
+          <div class="card-body">
+            <div class="card-title">${category.name}</div>
+          </div>
+        `;
+
+        categoriesGrid.appendChild(card);
+      });
+    }
+
+    function showProducts(categoryId) {
+      const category = categoriesData.find(item => item.id === categoryId);
+      if (!category) return;
+
+      categoriesGrid.classList.add("hidden");
+      productsSection.classList.remove("hidden");
+      mainPageTitle.classList.add("hidden");
+      productsTitle.textContent = category.name;
+
+      productsGrid.innerHTML = "";
+
+      category.products.forEach(product => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.onclick = function () {
+          openProductModal(product);
+        };
+
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <div class="card-body">
+            <div class="card-title">${product.name}</div>
+            <div class="card-line">Quantity: ${product.quantity}</div>
+            <div class="card-line mrp">MRP: ${product.mrp}</div>
+          </div>
+        `;
+
+        productsGrid.appendChild(card);
+      });
+    }
+
+    function showCategories() {
+      categoriesGrid.classList.remove("hidden");
+      productsSection.classList.add("hidden");
+      mainPageTitle.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function openProductModal(product) {
+      document.getElementById("modalImage").src = product.image;
+      document.getElementById("modalImage").alt = product.name;
+      document.getElementById("modalTitle").textContent = product.name;
+      document.getElementById("modalQty").textContent = product.quantity;
+      document.getElementById("modalMrp").textContent = product.mrp;
+      document.getElementById("modalDesc").textContent = product.description;
+
+      const message = `नमस्ते, मुझे इस प्रोडक्ट के बारे में जानकारी चाहिए:%0A%0A${product.name}%0AQuantity: ${product.quantity}%0AMRP: ${product.mrp}`;
+      document.getElementById("whatsappBtn").href = `https://wa.me/${whatsappNumber}?text=${message}`;
+
+      document.getElementById("productModal").style.display = "block";
+    }
+
+    function closeProductModal() {
+      document.getElementById("productModal").style.display = "none";
+    }
+
+    window.addEventListener("click", function(event) {
+      const modal = document.getElementById("productModal");
+      if (event.target === modal) {
+        closeProductModal();
+      }
+    });
+
+    renderCategories();
+  </script>
+</body>
+</html>
