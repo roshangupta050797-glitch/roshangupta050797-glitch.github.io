@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart - RN Kirana Wholesale</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      color: #222;
+    }
+
+    .topbar {
+      background: #0b7a3b;
+      color: white;
+      padding: 14px 12px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      flex: 1;
+    }
+
+    .nav-btn {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
+      background: rgba(255,255,255,0.15);
+      padding: 8px 12px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+
+    .page-wrap {
+      padding: 12px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 6px 0 14px;
+    }
+
+    .cart-item {
+      background: white;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .cart-item h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+
+    .cart-meta {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .small-btn {
+      border: none;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .qty-btn {
+      background: #ffd814;
+      color: #111;
+    }
+
+    .save-btn {
+      background: #e3f2fd;
+      color: #0d47a1;
+    }
+
+    .move-btn {
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    .delete-btn {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .summary-box {
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      margin-top: 18px;
+    }
+
+    .summary-line {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .customer-form {
+      margin-top: 12px;
+    }
+
+    .customer-form input,
+    .customer-form textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 15px;
+      outline: none;
+      background: white;
+    }
+
+    .customer-form textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .customer-form input:focus,
+    .customer-form textarea:focus {
+      border-color: #25D366;
+      box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.12);
+    }
+
+    .main-btn {
+      width: 100%;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .order-btn {
+      background: #25D366;
+      color: white;
+    }
+
+    .clear-btn {
+      background: #222;
+      color: white;
+    }
+
+    .empty-box {
+      background: white;
+      border-radius: 16px;
+      padding: 30px 16px;
+      text-align: center;
+      color: #666;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      font-size: 18px;
+    }
+
+    .saved-section {
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <a href="index.html" class="nav-btn">← Home</a>
+    <div class="brand">RN Kirana Cart</div>
+    <a href="namkeen.html" class="nav-btn">Namkeen</a>
+  </div>
+
+  <div class="page-wrap">
+    <div class="section-title">Your Cart</div>
+    <div id="cartContainer"></div>
+
+    <div class="saved-section">
+      <div class="section-title">Saved for Later</div>
+      <div id="savedContainer"></div>
+    </div>
+
+    <div class="summary-box">
+      <div class="summary-line" id="totalItems">Total Items: 0</div>
+      <div class="summary-line" id="totalAmount">Estimated Total: ₹0</div>
+
+      <div class="customer-form">
+        <input type="text" id="custName" placeholder="आपका नाम">
+        <input type="tel" id="custPhone" placeholder="मोबाइल नंबर">
+        <textarea id="custAddress" placeholder="पूरा पता / गांव / शहर"></textarea>
+      </div>
+
+      <button class="main-btn order-btn" onclick="sendOrderToWhatsApp()">Order Now on WhatsApp</button>
+      <button class="main-btn clear-btn" onclick="clearCart()">Clear Cart</button>
+    </div>
+  </div>
+
+  <script>
+    function getCart() {
+      return JSON.parse(localStorage.getItem("rn_cart")) || [];
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem("rn_cart", JSON.stringify(cart));
+    }
+
+    function getSaved() {
+      return JSON.parse(localStorage.getItem("rn_saved")) || [];
+    }
+
+    function saveSaved(saved) {
+      localStorage.setItem("rn_saved", JSON.stringify(saved));
+    }
+
+    function renderCart() {
+      const cart = getCart();
+      const saved = getSaved();
+
+      const cartContainer = document.getElementById("cartContainer");
+      const savedContainer = document.getElementById("savedContainer");
+
+      let totalItems = 0;
+      let totalAmount = 0;
+
+      if (cart.length === 0) {
+        cartContainer.innerHTML = '<div class="empty-box">Aapka cart abhi khaali hai 🛒</div>';
+      } else {
+        let cartHtml = "";
+
+        cart.forEach((item, index) => {
+          totalItems += item.qty;
+          totalAmount += item.price * item.qty;
+
+          cartHtml += `
+            <div class="cart-item">
+              <h3>${item.name}</h3>
+              <div class="cart-meta">
+                Price: ₹${item.price}<br>
+                Qty: ${item.qty}<br>
+                Item Total: ₹${item.price * item.qty}
+              </div>
+
+              <div class="btn-row">
+                <button class="small-btn qty-btn" onclick="increaseQty(${index})">+ Add One</button>
+                <button class="small-btn qty-btn" onclick="decreaseQty(${index})">- Remove One</button>
+                <button class="small-btn save-btn" onclick="saveForLater(${index})">Save for Later</button>
+                <button class="small-btn delete-btn" onclick="deleteItem(${index})">Delete</button>
+              </div>
+            </div>
+          `;
+        });
+
+        cartContainer.innerHTML = cartHtml;
+      }
+
+      if (saved.length === 0) {
+        savedContainer.innerHTML = '<div class="empty-box">Abhi koi saved item nahi hai</div>';
+      } else {
+        let savedHtml = "";
+
+        saved.forEach((item, index) => {
+          savedHtml += `
+            <div class="cart-item">
+              <h3>${item.name}</h3>
+              <div class="cart-meta">
+                Price: ₹${item.price}<br>
+                Qty: ${item.qty}
+              </div>
+
+              <div class="btn-row">
+                <button class="small-btn move-btn" onclick="moveToCart(${index})">Move to Cart</button>
+                <button class="small-btn delete-btn" onclick="deleteSaved(${index})">Delete</button>
+              </div>
+            </div>
+          `;
+        });
+
+        savedContainer.innerHTML = savedHtml;
+      }
+
+      document.getElementById("totalItems").innerText = "Total Items: " + totalItems;
+      document.getElementById("totalAmount").innerText = "Estimated Total: ₹" + totalAmount;
+    }
+
+    function increaseQty(index) {
+      let cart = getCart();
+      cart[index].qty += 1;
+      saveCart(cart);
+      renderCart();
+    }
+
+    function decreaseQty(index) {
+      let cart = getCart();
+      cart[index].qty -= 1;
+
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+
+      saveCart(cart);
+      renderCart();
+    }
+
+    function deleteItem(index) {
+      let cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      renderCart();
+    }
+
+    function saveForLater(index) {
+      let cart = getCart();
+      let saved = getSaved();
+
+      const item = cart[index];
+      saved.push(item);
+      cart.splice(index, 1);
+
+      saveCart(cart);
+      saveSaved(saved);
+      renderCart();
+    }
+
+    function moveToCart(index) {
+      let cart = getCart();
+      let saved = getSaved();
+
+      const item = saved[index];
+
+      let existing = cart.find(cartItem => cartItem.name === item.name);
+
+      if (existing) {
+        existing.qty += item.qty;
+      } else {
+        cart.push(item);
+      }
+
+      saved.splice(index, 1);
+
+      saveCart(cart);
+      saveSaved(saved);
+      renderCart();
+    }
+
+    function deleteSaved(index) {
+      let saved = getSaved();
+      saved.splice(index, 1);
+      saveSaved(saved);
+      renderCart();
+    }
+
+    function clearCart() {
+      localStorage.removeItem("rn_cart");
+      renderCart();
+    }
+
+    function sendOrderToWhatsApp() {
+      const name = document.getElementById("custName").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const address = document.getElementById("custAddress").value.trim();
+      const cart = getCart();
+
+      if (!name || !phone || !address) {
+        alert("कृपया नाम, मोबाइल नंबर और पता भरें");
+        return;
+      }
+
+      if (cart.length === 0) {
+        alert("Cart khaali hai");
+        return;
+      }
+
+      let totalItems = 0;
+      let totalAmount = 0;
+
+      let message = "नमस्ते 🙏%0A%0A";
+      message += "मुझे ये सामान ऑर्डर करना है:%0A%0A";
+
+      cart.forEach((item, i) => {
+        totalItems += item.qty;
+        totalAmount += item.price * item.qty;
+        message += (i + 1) + ". " + item.name + " - ₹" + item.price + " x " + item.qty + " = ₹" + (item.price * item.qty) + "%0A";
+      });
+
+      message += "%0Aकुल आइटम: " + totalItems;
+      message += "%0Aअनुमानित कुल: ₹" + totalAmount;
+      message += "%0A%0Aनाम: " + name;
+      message += "%0Aमोबाइल: " + phone;
+      message += "%0Aपता: " + address;
+      message += "%0A%0Aकृपया मेरा ऑर्डर कन्फर्म करें।";
+
+      window.open("https://wa.me/918574788904?text=" + message, "_blank");
+    }
+
+    renderCart();
+  </script>
+
+</body>
+</html>
