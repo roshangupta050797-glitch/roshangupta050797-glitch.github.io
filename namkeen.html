@@ -1,574 +1,203 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Namkeen - RN Kirana Wholesale</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Namkeen - RN Kirana</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f3f3f3;
-      color: #222;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f3f3f3;
+}
 
-    .topbar {
-      background: #0b7a3b;
-      color: white;
-      padding: 14px 12px 10px;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    }
+.topbar {
+  background: #0b7a3b;
+  color: white;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+}
 
-    .brand-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
+.search-box input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: none;
+}
 
-    .brand {
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-      flex: 1;
-    }
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
 
-    .nav-btn {
-      color: white;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: bold;
-      background: rgba(255,255,255,0.15);
-      padding: 8px 12px;
-      border-radius: 10px;
-      white-space: nowrap;
-    }
+.product {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+}
 
-    .search-box input {
-      width: 100%;
-      padding: 12px 14px;
-      border: none;
-      border-radius: 12px;
-      font-size: 15px;
-      outline: none;
-    }
+.product img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+}
 
-    .offer-banner {
-      margin: 12px;
-      background: linear-gradient(135deg, #ffe600, #ffb300);
-      border-radius: 16px;
-      padding: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
+.cart-btn {
+  background: #ffd814;
+  border: none;
+  padding: 8px;
+  width: 100%;
+  border-radius: 8px;
+}
 
-    .offer-banner h2 {
-      margin: 0;
-      font-size: 22px;
-      line-height: 1.2;
-    }
+.qty-box {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
 
-    .offer-banner p {
-      margin: 8px 0 0;
-      font-size: 14px;
-      font-weight: bold;
-    }
+.qty-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: #ffd814;
+}
 
-    .offer-badge {
-      background: #ff1744;
-      color: white;
-      padding: 10px 12px;
-      border-radius: 14px;
-      font-size: 13px;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .chips {
-      display: flex;
-      overflow-x: auto;
-      gap: 10px;
-      padding: 0 12px 12px;
-      scrollbar-width: none;
-    }
-
-    .chips::-webkit-scrollbar {
-      display: none;
-    }
-
-    .chip {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 999px;
-      padding: 9px 14px;
-      font-size: 14px;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 4px 12px 10px;
-    }
-
-    .section-head h3 {
-      margin: 0;
-      font-size: 22px;
-    }
-
-    .section-head span {
-      font-size: 14px;
-      color: #555;
-      font-weight: bold;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      padding: 0 12px 20px;
-    }
-
-    .product-card {
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      position: relative;
-    }
-
-    .product-image-wrap {
-      position: relative;
-      background: #fff;
-      padding: 10px;
-    }
-
-    .product-card img {
-      width: 100%;
-      height: 145px;
-      object-fit: cover;
-      border-radius: 12px;
-      display: block;
-    }
-
-    .deal-tag {
-      position: absolute;
-      left: 12px;
-      top: 12px;
-      background: #ff1744;
-      color: white;
-      font-size: 12px;
-      font-weight: bold;
-      padding: 5px 8px;
-      border-radius: 8px;
-    }
-
-    .plus-btn {
-      position: absolute;
-      right: 12px;
-      bottom: 12px;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: none;
-      background: #ffd600;
-      color: #111;
-      font-size: 24px;
-      font-weight: bold;
-      line-height: 1;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
-    }
-
-    .product-info {
-      padding: 10px 12px 14px;
-    }
-
-    .product-title {
-      font-size: 15px;
-      font-weight: bold;
-      margin-bottom: 6px;
-      min-height: 38px;
-      line-height: 1.25;
-    }
-
-    .product-sub {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 8px;
-    }
-
-    .rating {
-      font-size: 13px;
-      color: #ff9800;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-
-    .price-row {
-      display: flex;
-      align-items: end;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
-
-    .price {
-      color: #d50000;
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-    .old-price {
-      color: #888;
-      text-decoration: line-through;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .off {
-      color: #0b7a3b;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .cart-btn {
-      display: block;
-      width: 100%;
-      text-align: center;
-      background: #ffd814;
-      color: #111;
-      border: none;
-      padding: 10px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .popup {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-
-    .popup-content {
-      background: white;
-      width: 100%;
-      max-width: 420px;
-      border-radius: 18px;
-      overflow: hidden;
-      position: relative;
-      animation: popin 0.2s ease;
-    }
-
-    @keyframes popin {
-      from { transform: scale(0.95); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .popup-content img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .popup-body {
-      padding: 16px;
-    }
-
-    .popup-title {
-      margin: 0 0 8px;
-      font-size: 22px;
-    }
-
-    .popup-desc {
-      font-size: 14px;
-      color: #444;
-      line-height: 1.5;
-      margin-bottom: 12px;
-    }
-
-    .popup-price {
-      color: #d50000;
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 14px;
-    }
-
-    .popup-cart {
-      display: block;
-      width: 100%;
-      text-align: center;
-      background: #ffd814;
-      color: #111;
-      border: none;
-      padding: 12px;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    .close-popup {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 38px;
-      height: 38px;
-      border: none;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.6);
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-    }
-  </style>
+.qty-input {
+  width: 40px;
+  text-align: center;
+}
+</style>
 </head>
+
 <body>
 
-  <div class="topbar">
-    <div class="brand-row">
-      <a href="index.html" class="nav-btn">← Back</a>
-      <div class="brand">RN Kirana Wholesale</div>
-      <a href="cart.html" class="nav-btn">Cart 🛒</a>
-    </div>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Namkeen search karein...">
-    </div>
-  </div>
+<div class="topbar">
+  <a href="index.html">← Back</a>
+  <b>RN Kirana</b>
+  <a href="cart.html">Cart 🛒</a>
+</div>
 
-  <div class="offer-banner">
-    <div>
-      <h2>HOT NAMKEEN DEALS</h2>
-      <p>Wholesale rate par behtareen offers</p>
-    </div>
-    <div class="offer-badge">From ₹80</div>
-  </div>
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Search namkeen...">
+</div>
 
-  <div class="chips">
-    <div class="chip">All</div>
-    <div class="chip">Best Seller</div>
-    <div class="chip">Mixture</div>
-    <div class="chip">Bhujia</div>
-    <div class="chip">Boondi</div>
-    <div class="chip">Sev</div>
-  </div>
+<div class="product-grid">
 
-  <div class="section-head">
-    <h3>Best of Namkeen</h3>
-    <span>Top Products</span>
-  </div>
+  <!-- PRODUCT 1 -->
+  <div class="product" data-name="Amar Boondi Namkeen">
+    <img src="offer1.jpg">
+    <h4>Amar Boondi</h4>
+    <p>₹132</p>
 
-  <div class="product-grid" id="productGrid">
-
-    <div class="product-card product-item" data-name="Amar Boondi Namkeen">
-      <div class="product-image-wrap">
-        <span class="deal-tag">#BestDeal</span>
-        <img src="offer1.jpg" alt="Amar Boondi Namkeen">
-        <button class="plus-btn" onclick="openPopup('Amar Boondi Namkeen','1kg pack, crunchy aur tasty namkeen. Retail aur wholesale dono ke liye best choice.','₹132','offer1.jpg',132)">+</button>
-      </div>
-      <div class="product-info">
-        <div class="product-title">Amar Boondi Namkeen</div>
-        <div class="product-sub">1kg pack</div>
-        <div class="rating">★★★★☆ 4.4</div>
-        <div class="price-row">
-          <div class="price">₹132</div>
-          <div class="old-price">₹160</div>
-          <div class="off">17% off</div>
-        </div>
-        <button class="cart-btn" onclick="addToCart('Amar Boondi Namkeen',132)">Add to Cart</button>
-      </div>
-    </div>
-
-    <div class="product-card product-item" data-name="Sev Bhujia">
-      <div class="product-image-wrap">
-        <span class="deal-tag">#Hot</span>
-        <img src="offer2.jpg" alt="Sev Bhujia">
-        <button class="plus-btn" onclick="openPopup('Sev Bhujia','Mazedar sev bhujia jo daily sale ke liye acchi choice hai. Dukaan par fast moving item.','₹110','offer2.jpg',110)">+</button>
-      </div>
-      <div class="product-info">
-        <div class="product-title">Sev Bhujia</div>
-        <div class="product-sub">Popular namkeen pack</div>
-        <div class="rating">★★★★☆ 4.2</div>
-        <div class="price-row">
-          <div class="price">₹110</div>
-          <div class="old-price">₹140</div>
-          <div class="off">21% off</div>
-        </div>
-        <button class="cart-btn" onclick="addToCart('Sev Bhujia',110)">Add to Cart</button>
-      </div>
-    </div>
-
-    <div class="product-card product-item" data-name="Mix Namkeen">
-      <div class="product-image-wrap">
-        <span class="deal-tag">#CrazyDeal</span>
-        <img src="offer3.jpg" alt="Mix Namkeen">
-        <button class="plus-btn" onclick="openPopup('Mix Namkeen','Mixed taste wala namkeen, tea time aur family use ke liye best.','₹95','offer3.jpg',95)">+</button>
-      </div>
-      <div class="product-info">
-        <div class="product-title">Mix Namkeen</div>
-        <div class="product-sub">Family choice</div>
-        <div class="rating">★★★★☆ 4.1</div>
-        <div class="price-row">
-          <div class="price">₹95</div>
-          <div class="old-price">₹120</div>
-          <div class="off">20% off</div>
-        </div>
-        <button class="cart-btn" onclick="addToCart('Mix Namkeen',95)">Add to Cart</button>
-      </div>
-    </div>
-
-    <div class="product-card product-item" data-name="Aloo Bhujia">
-      <div class="product-image-wrap">
-        <span class="deal-tag">#Sale</span>
-        <img src="offer1.jpg" alt="Aloo Bhujia">
-        <button class="plus-btn" onclick="openPopup('Aloo Bhujia','Crispy aloo bhujia jo har age group ko pasand aati hai.','₹105','offer1.jpg',105)">+</button>
-      </div>
-      <div class="product-info">
-        <div class="product-title">Aloo Bhujia</div>
-        <div class="product-sub">Crunchy & spicy</div>
-        <div class="rating">★★★★☆ 4.3</div>
-        <div class="price-row">
-          <div class="price">₹105</div>
-          <div class="old-price">₹135</div>
-          <div class="off">22% off</div>
-        </div>
-        <button class="cart-btn" onclick="addToCart('Aloo Bhujia',105)">Add to Cart</button>
-      </div>
-    </div>
-
-    <div class="product-card product-item" data-name="Moong Dal Namkeen">
-      <div class="product-image-wrap">
-        <span class="deal-tag">#TopPick</span>
-        <img src="offer2.jpg" alt="Moong Dal Namkeen">
-        <button class="plus-btn" onclick="openPopup('Moong Dal Namkeen','Halka aur tasty moong dal namkeen. Premium feel ke saath.','₹125','offer2.jpg',125)">+</button>
-      </div>
-      <div class="product-info">
-        <div class="product-title">Moong Dal Namkeen</div>
-        <div class="product-sub">Premium snack</div>
-        <div class="rating">★★★★☆ 4.5</div>
-        <div class="price-row">
-          <div class="price">₹125</div>
-          <div class="old-price">₹150</div>
-          <div class="off">16% off</div>
-        </div>
-        <button class="cart-btn" onclick="addToCart('Moong Dal Namkeen',125)">Add to Cart</button>
-      </div>
-    </div>
-
-    <div class="product-card product-item" data-name="Khatta Meetha Mix">
-      <div class="product-image-wrap">
-        <span class="deal-tag">#Popular</span>
-        <img src="offer3.jpg" alt="Khatta Meetha Mix">
-        <button class="plus-btn" onclick="openPopup('Khatta Meetha Mix','Sweet aur tangy taste ka best mix. Fast moving namkeen item.','₹118','offer3.jpg',118)">+</button>
-      </div>
-      <div class="product-info">
-        <div class="product-title">Khatta Meetha Mix</div>
-        <div class="product-sub">Tea time favorite</div>
-        <div class="rating">★★★★☆ 4.2</div>
-        <div class="price-row">
-          <div class="price">₹118</div>
-          <div class="old-price">₹145</div>
-          <div class="off">18% off</div>
-        </div>
-        <button class="cart-btn" onclick="addToCart('Khatta Meetha Mix',118)">Add to Cart</button>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="popup" id="productPopup">
-    <div class="popup-content">
-      <button class="close-popup" onclick="closePopup()">×</button>
-      <img id="popupImg" src="" alt="Product">
-      <div class="popup-body">
-        <h2 class="popup-title" id="popupTitle"></h2>
-        <div class="popup-desc" id="popupDesc"></div>
-        <div class="popup-price" id="popupPrice"></div>
-        <button class="popup-cart" id="popupCartBtn">Add to Cart</button>
-      </div>
+    <div id="qty-Amar Boondi Namkeen">
+      <button class="cart-btn" onclick="firstAdd('Amar Boondi Namkeen',132)">Add to Cart</button>
     </div>
   </div>
 
-  <script>
-    function addToCart(name, price) {
-      let cart = JSON.parse(localStorage.getItem("rn_cart")) || [];
+  <!-- PRODUCT 2 -->
+  <div class="product" data-name="Sev Bhujia">
+    <img src="offer2.jpg">
+    <h4>Sev Bhujia</h4>
+    <p>₹110</p>
 
-      let existing = cart.find(item => item.name === name);
+    <div id="qty-Sev Bhujia">
+      <button class="cart-btn" onclick="firstAdd('Sev Bhujia',110)">Add to Cart</button>
+    </div>
+  </div>
 
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        cart.push({
-          name: name,
-          price: price,
-          qty: 1
-        });
-      }
+</div>
 
-      localStorage.setItem("rn_cart", JSON.stringify(cart));
-      alert(name + " cart me add ho gaya 🛒");
-    }
+<script>
 
-    function openPopup(title, desc, priceText, img, priceNumber) {
-      document.getElementById("popupTitle").innerText = title;
-      document.getElementById("popupDesc").innerText = desc;
-      document.getElementById("popupPrice").innerText = priceText;
-      document.getElementById("popupImg").src = img;
+// Add to cart
+function addToCart(name, price) {
+  let cart = JSON.parse(localStorage.getItem("rn_cart")) || [];
 
-      const popupBtn = document.getElementById("popupCartBtn");
-      popupBtn.onclick = function() {
-        addToCart(title, priceNumber);
-        closePopup();
-      };
+  let item = cart.find(i => i.name === name);
 
-      document.getElementById("productPopup").style.display = "flex";
-    }
+  if (item) {
+    item.qty++;
+  } else {
+    cart.push({ name, price, qty: 1 });
+  }
 
-    function closePopup() {
-      document.getElementById("productPopup").style.display = "none";
-    }
+  localStorage.setItem("rn_cart", JSON.stringify(cart));
 
-    document.getElementById("productPopup").addEventListener("click", function(e) {
-      if (e.target.id === "productPopup") {
-        closePopup();
-      }
-    });
+  alert("✅ " + name + " has been successfully added to your cart.\n\nYou can manage it anytime from Cart 🛒");
+}
 
-    document.getElementById("searchInput").addEventListener("keyup", function() {
-      let value = this.value.toLowerCase();
-      let items = document.querySelectorAll(".product-item");
+// First click
+function firstAdd(name, price) {
+  addToCart(name, price);
 
-      items.forEach(function(item) {
-        let name = item.getAttribute("data-name").toLowerCase();
-        if (name.includes(value)) {
-          item.style.display = "block";
-        } else {
-          item.style.display = "none";
-        }
-      });
-    });
-  </script>
+  let box = document.getElementById("qty-" + name);
+
+  box.innerHTML = `
+    <div class="qty-box">
+      <button class="qty-btn" onclick="changeQty('${name}', -1)">-</button>
+      <input type="number" value="1" class="qty-input"
+      onchange="setQty('${name}', this.value)">
+      <button class="qty-btn" onclick="changeQty('${name}', 1)">+</button>
+    </div>
+  `;
+}
+
+// Change qty
+function changeQty(name, change) {
+  let cart = JSON.parse(localStorage.getItem("rn_cart")) || [];
+  let item = cart.find(i => i.name === name);
+
+  if (!item) return;
+
+  item.qty += change;
+
+  if (item.qty <= 0) {
+    cart = cart.filter(i => i.name !== name);
+
+    document.getElementById("qty-" + name).innerHTML =
+      `<button class="cart-btn" onclick="firstAdd('${name}', ${item.price})">Add to Cart</button>`;
+  } else {
+    document.querySelector(`#qty-${name} input`).value = item.qty;
+  }
+
+  localStorage.setItem("rn_cart", JSON.stringify(cart));
+}
+
+// Set qty
+function setQty(name, value) {
+  let cart = JSON.parse(localStorage.getItem("rn_cart")) || [];
+  let item = cart.find(i => i.name === name);
+
+  if (!item) return;
+
+  item.qty = parseInt(value);
+
+  if (item.qty <= 0) {
+    cart = cart.filter(i => i.name !== name);
+
+    document.getElementById("qty-" + name).innerHTML =
+      `<button class="cart-btn" onclick="firstAdd('${name}', ${item.price})">Add to Cart</button>`;
+  }
+
+  localStorage.setItem("rn_cart", JSON.stringify(cart));
+}
+
+// Search
+document.getElementById("searchInput").addEventListener("keyup", function() {
+  let value = this.value.toLowerCase();
+  document.querySelectorAll(".product").forEach(p => {
+    let name = p.getAttribute("data-name").toLowerCase();
+    p.style.display = name.includes(value) ? "block" : "none";
+  });
+});
+
+</script>
 
 </body>
-        </html>
+</html>
