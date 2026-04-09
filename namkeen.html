@@ -30,16 +30,18 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 10px;
     }
 
     .brand {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
+      text-align: center;
+      flex: 1;
     }
 
-    .back-btn {
+    .nav-btn {
       color: white;
       text-decoration: none;
       font-size: 14px;
@@ -47,6 +49,7 @@
       background: rgba(255,255,255,0.15);
       padding: 8px 12px;
       border-radius: 10px;
+      white-space: nowrap;
     }
 
     .search-box input {
@@ -72,7 +75,7 @@
 
     .offer-banner h2 {
       margin: 0;
-      font-size: 24px;
+      font-size: 22px;
       line-height: 1.2;
     }
 
@@ -112,7 +115,6 @@
       font-size: 14px;
       font-weight: bold;
       white-space: nowrap;
-      cursor: pointer;
     }
 
     .section-head {
@@ -243,17 +245,18 @@
       font-weight: bold;
     }
 
-    .wa-btn {
+    .cart-btn {
       display: block;
       width: 100%;
       text-align: center;
-      background: #25D366;
-      color: white;
-      text-decoration: none;
+      background: #ffd814;
+      color: #111;
+      border: none;
       padding: 10px;
       border-radius: 10px;
       font-size: 14px;
       font-weight: bold;
+      cursor: pointer;
     }
 
     .popup {
@@ -312,16 +315,18 @@
       margin-bottom: 14px;
     }
 
-    .popup-wa {
+    .popup-cart {
       display: block;
+      width: 100%;
       text-align: center;
-      background: #25D366;
-      color: white;
-      text-decoration: none;
+      background: #ffd814;
+      color: #111;
+      border: none;
       padding: 12px;
       border-radius: 12px;
       font-weight: bold;
       font-size: 15px;
+      cursor: pointer;
     }
 
     .close-popup {
@@ -343,8 +348,9 @@
 
   <div class="topbar">
     <div class="brand-row">
-      <a href="index.html" class="back-btn">← Back</a>
+      <a href="index.html" class="nav-btn">← Back</a>
       <div class="brand">RN Kirana Wholesale</div>
+      <a href="cart.html" class="nav-btn">Cart 🛒</a>
     </div>
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Namkeen search karein...">
@@ -370,7 +376,7 @@
 
   <div class="section-head">
     <h3>Best of Namkeen</h3>
-    <span>See all deals</span>
+    <span>Top Products</span>
   </div>
 
   <div class="product-grid" id="productGrid">
@@ -379,7 +385,7 @@
       <div class="product-image-wrap">
         <span class="deal-tag">#BestDeal</span>
         <img src="offer1.jpg" alt="Amar Boondi Namkeen">
-        <button class="plus-btn" onclick="openPopup('Amar Boondi Namkeen','1kg pack, crunchy aur tasty namkeen. Retail aur wholesale dono ke liye best choice.','₹132','offer1.jpg','Amar Boondi Namkeen')">+</button>
+        <button class="plus-btn" onclick="openPopup('Amar Boondi Namkeen','1kg pack, crunchy aur tasty namkeen. Retail aur wholesale dono ke liye best choice.','₹132','offer1.jpg',132)">+</button>
       </div>
       <div class="product-info">
         <div class="product-title">Amar Boondi Namkeen</div>
@@ -390,7 +396,7 @@
           <div class="old-price">₹160</div>
           <div class="off">17% off</div>
         </div>
-        <a class="wa-btn" href="https://wa.me/918574788904?text=Namaste,%20mujhe%20Amar%20Boondi%20Namkeen%201kg%20ka%20rate%20chahiye" target="_blank">WhatsApp</a>
+        <button class="cart-btn" onclick="addToCart('Amar Boondi Namkeen',132)">Add to Cart</button>
       </div>
     </div>
 
@@ -398,7 +404,7 @@
       <div class="product-image-wrap">
         <span class="deal-tag">#Hot</span>
         <img src="offer2.jpg" alt="Sev Bhujia">
-        <button class="plus-btn" onclick="openPopup('Sev Bhujia','Mazedar sev bhujia jo daily sale ke liye acchi choice hai. Dukaan par fast moving item.','₹110','offer2.jpg','Sev Bhujia')">+</button>
+        <button class="plus-btn" onclick="openPopup('Sev Bhujia','Mazedar sev bhujia jo daily sale ke liye acchi choice hai. Dukaan par fast moving item.','₹110','offer2.jpg',110)">+</button>
       </div>
       <div class="product-info">
         <div class="product-title">Sev Bhujia</div>
@@ -409,7 +415,7 @@
           <div class="old-price">₹140</div>
           <div class="off">21% off</div>
         </div>
-        <a class="wa-btn" href="https://wa.me/918574788904?text=Namaste,%20mujhe%20Sev%20Bhujia%20ka%20rate%20chahiye" target="_blank">WhatsApp</a>
+        <button class="cart-btn" onclick="addToCart('Sev Bhujia',110)">Add to Cart</button>
       </div>
     </div>
 
@@ -417,7 +423,7 @@
       <div class="product-image-wrap">
         <span class="deal-tag">#CrazyDeal</span>
         <img src="offer3.jpg" alt="Mix Namkeen">
-        <button class="plus-btn" onclick="openPopup('Mix Namkeen','Mixed taste wala namkeen, tea time aur family use ke liye best.','₹95','offer3.jpg','Mix Namkeen')">+</button>
+        <button class="plus-btn" onclick="openPopup('Mix Namkeen','Mixed taste wala namkeen, tea time aur family use ke liye best.','₹95','offer3.jpg',95)">+</button>
       </div>
       <div class="product-info">
         <div class="product-title">Mix Namkeen</div>
@@ -428,7 +434,7 @@
           <div class="old-price">₹120</div>
           <div class="off">20% off</div>
         </div>
-        <a class="wa-btn" href="https://wa.me/918574788904?text=Namaste,%20mujhe%20Mix%20Namkeen%20ka%20rate%20chahiye" target="_blank">WhatsApp</a>
+        <button class="cart-btn" onclick="addToCart('Mix Namkeen',95)">Add to Cart</button>
       </div>
     </div>
 
@@ -436,7 +442,7 @@
       <div class="product-image-wrap">
         <span class="deal-tag">#Sale</span>
         <img src="offer1.jpg" alt="Aloo Bhujia">
-        <button class="plus-btn" onclick="openPopup('Aloo Bhujia','Crispy aloo bhujia jo har age group ko pasand aati hai.','₹105','offer1.jpg','Aloo Bhujia')">+</button>
+        <button class="plus-btn" onclick="openPopup('Aloo Bhujia','Crispy aloo bhujia jo har age group ko pasand aati hai.','₹105','offer1.jpg',105)">+</button>
       </div>
       <div class="product-info">
         <div class="product-title">Aloo Bhujia</div>
@@ -447,7 +453,7 @@
           <div class="old-price">₹135</div>
           <div class="off">22% off</div>
         </div>
-        <a class="wa-btn" href="https://wa.me/918574788904?text=Namaste,%20mujhe%20Aloo%20Bhujia%20ka%20rate%20chahiye" target="_blank">WhatsApp</a>
+        <button class="cart-btn" onclick="addToCart('Aloo Bhujia',105)">Add to Cart</button>
       </div>
     </div>
 
@@ -455,7 +461,7 @@
       <div class="product-image-wrap">
         <span class="deal-tag">#TopPick</span>
         <img src="offer2.jpg" alt="Moong Dal Namkeen">
-        <button class="plus-btn" onclick="openPopup('Moong Dal Namkeen','Halka aur tasty moong dal namkeen. Premium feel ke saath.','₹125','offer2.jpg','Moong Dal Namkeen')">+</button>
+        <button class="plus-btn" onclick="openPopup('Moong Dal Namkeen','Halka aur tasty moong dal namkeen. Premium feel ke saath.','₹125','offer2.jpg',125)">+</button>
       </div>
       <div class="product-info">
         <div class="product-title">Moong Dal Namkeen</div>
@@ -466,7 +472,7 @@
           <div class="old-price">₹150</div>
           <div class="off">16% off</div>
         </div>
-        <a class="wa-btn" href="https://wa.me/918574788904?text=Namaste,%20mujhe%20Moong%20Dal%20Namkeen%20ka%20rate%20chahiye" target="_blank">WhatsApp</a>
+        <button class="cart-btn" onclick="addToCart('Moong Dal Namkeen',125)">Add to Cart</button>
       </div>
     </div>
 
@@ -474,7 +480,7 @@
       <div class="product-image-wrap">
         <span class="deal-tag">#Popular</span>
         <img src="offer3.jpg" alt="Khatta Meetha Mix">
-        <button class="plus-btn" onclick="openPopup('Khatta Meetha Mix','Sweet aur tangy taste ka best mix. Fast moving namkeen item.','₹118','offer3.jpg','Khatta Meetha Mix')">+</button>
+        <button class="plus-btn" onclick="openPopup('Khatta Meetha Mix','Sweet aur tangy taste ka best mix. Fast moving namkeen item.','₹118','offer3.jpg',118)">+</button>
       </div>
       <div class="product-info">
         <div class="product-title">Khatta Meetha Mix</div>
@@ -485,7 +491,7 @@
           <div class="old-price">₹145</div>
           <div class="off">18% off</div>
         </div>
-        <a class="wa-btn" href="https://wa.me/918574788904?text=Namaste,%20mujhe%20Khatta%20Meetha%20Mix%20ka%20rate%20chahiye" target="_blank">WhatsApp</a>
+        <button class="cart-btn" onclick="addToCart('Khatta Meetha Mix',118)">Add to Cart</button>
       </div>
     </div>
 
@@ -499,19 +505,43 @@
         <h2 class="popup-title" id="popupTitle"></h2>
         <div class="popup-desc" id="popupDesc"></div>
         <div class="popup-price" id="popupPrice"></div>
-        <a class="popup-wa" id="popupWa" href="#" target="_blank">WhatsApp par poochhein</a>
+        <button class="popup-cart" id="popupCartBtn">Add to Cart</button>
       </div>
     </div>
   </div>
 
   <script>
-    function openPopup(title, desc, price, img, productName) {
+    function addToCart(name, price) {
+      let cart = JSON.parse(localStorage.getItem("rn_cart")) || [];
+
+      let existing = cart.find(item => item.name === name);
+
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({
+          name: name,
+          price: price,
+          qty: 1
+        });
+      }
+
+      localStorage.setItem("rn_cart", JSON.stringify(cart));
+      alert(name + " cart me add ho gaya 🛒");
+    }
+
+    function openPopup(title, desc, priceText, img, priceNumber) {
       document.getElementById("popupTitle").innerText = title;
       document.getElementById("popupDesc").innerText = desc;
-      document.getElementById("popupPrice").innerText = price;
+      document.getElementById("popupPrice").innerText = priceText;
       document.getElementById("popupImg").src = img;
-      document.getElementById("popupWa").href =
-        "https://wa.me/918574788904?text=Namaste,%20mujhe%20" + encodeURIComponent(productName) + "%20ka%20rate%20chahiye";
+
+      const popupBtn = document.getElementById("popupCartBtn");
+      popupBtn.onclick = function() {
+        addToCart(title, priceNumber);
+        closePopup();
+      };
+
       document.getElementById("productPopup").style.display = "flex";
     }
 
@@ -541,4 +571,4 @@
   </script>
 
 </body>
-          </html>
+        </html>
