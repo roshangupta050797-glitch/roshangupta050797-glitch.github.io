@@ -1,203 +1,270 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Namkeen - RN Kirana</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart - RN Kirana Wholesale</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+    }
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #f3f3f3;
-}
+    .topbar {
+      background: #0b7a3b;
+      color: white;
+      padding: 14px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      position: sticky;
+      top: 0;
+    }
 
-.topbar {
-  background: #0b7a3b;
-  color: white;
-  padding: 12px;
-  display: flex;
-  justify-content: space-between;
-}
+    .back-link {
+      display: inline-block;
+      margin: 12px;
+      text-decoration: none;
+      color: #0b7a3b;
+      font-weight: bold;
+      background: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+    }
 
-.search-box input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: none;
-}
+    .cart-container {
+      padding: 12px;
+    }
 
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  padding: 10px;
-}
+    .cart-item {
+      background: white;
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
 
-.product {
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-}
+    .cart-item h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
 
-.product img {
-  width: 100%;
-  height: 130px;
-  object-fit: cover;
-}
+    .cart-meta {
+      color: #444;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
 
-.cart-btn {
-  background: #ffd814;
-  border: none;
-  padding: 8px;
-  width: 100%;
-  border-radius: 8px;
-}
+    .item-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-.qty-box {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
+    .qty-btn,
+    .remove-btn {
+      border: none;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-.qty-btn {
-  width: 30px;
-  height: 30px;
-  border: none;
-  background: #ffd814;
-}
+    .qty-btn {
+      background: #ffd814;
+    }
 
-.qty-input {
-  width: 40px;
-  text-align: center;
-}
-</style>
+    .remove-btn {
+      background: #ff5252;
+      color: white;
+    }
+
+    .summary-box {
+      background: white;
+      margin: 12px;
+      padding: 16px;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .summary-line {
+      font-size: 16px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .customer-form input,
+    .customer-form textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin: 6px 0;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    .order-btn,
+    .clear-btn {
+      width: 100%;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .order-btn {
+      background: #25D366;
+      color: white;
+    }
+
+    .clear-btn {
+      background: #222;
+      color: white;
+    }
+
+    .empty-cart {
+      text-align: center;
+      color: #555;
+      padding: 40px 15px;
+      font-size: 18px;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="topbar">
-  <a href="index.html">← Back</a>
-  <b>RN Kirana</b>
-  <a href="cart.html">Cart 🛒</a>
-</div>
+  <div class="topbar">RN Kirana Cart</div>
 
-<div class="search-box">
-  <input type="text" id="searchInput" placeholder="Search namkeen...">
-</div>
+  <a href="index.html" class="back-link">← Home</a>
 
-<div class="product-grid">
+  <div class="cart-container" id="cartContainer"></div>
 
-  <!-- PRODUCT 1 -->
-  <div class="product" data-name="Amar Boondi Namkeen">
-    <img src="offer1.jpg">
-    <h4>Amar Boondi</h4>
-    <p>₹132</p>
+  <div class="summary-box">
+    <div class="summary-line" id="totalItems">Total Items: 0</div>
+    <div class="summary-line" id="totalAmount">Estimated Total: ₹0</div>
 
-    <div id="qty-Amar Boondi Namkeen">
-      <button class="cart-btn" onclick="firstAdd('Amar Boondi Namkeen',132)">Add to Cart</button>
+    <div class="customer-form">
+      <input type="text" id="custName" placeholder="आपका नाम" required>
+      <input type="tel" id="custPhone" placeholder="मोबाइल नंबर" required>
+      <textarea id="custAddress" placeholder="पूरा पता / गांव / शहर" required></textarea>
     </div>
+
+    <button class="order-btn" onclick="sendOrderToWhatsApp()">Order Now on WhatsApp</button>
+    <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
   </div>
 
-  <!-- PRODUCT 2 -->
-  <div class="product" data-name="Sev Bhujia">
-    <img src="offer2.jpg">
-    <h4>Sev Bhujia</h4>
-    <p>₹110</p>
+  <script>
+    function getCart() {
+      return JSON.parse(localStorage.getItem("rn_cart")) || [];
+    }
 
-    <div id="qty-Sev Bhujia">
-      <button class="cart-btn" onclick="firstAdd('Sev Bhujia',110)">Add to Cart</button>
-    </div>
-  </div>
+    function saveCart(cart) {
+      localStorage.setItem("rn_cart", JSON.stringify(cart));
+    }
 
-</div>
+    function renderCart() {
+      const cartContainer = document.getElementById("cartContainer");
+      const cart = getCart();
 
-<script>
+      if (cart.length === 0) {
+        cartContainer.innerHTML = '<div class="empty-cart">Aapka cart abhi khaali hai 🛒</div>';
+        document.getElementById("totalItems").innerText = "Total Items: 0";
+        document.getElementById("totalAmount").innerText = "Estimated Total: ₹0";
+        return;
+      }
 
-// Add to cart
-function addToCart(name, price) {
-  let cart = JSON.parse(localStorage.getItem("rn_cart")) || [];
+      let html = "";
+      let totalItems = 0;
+      let totalAmount = 0;
 
-  let item = cart.find(i => i.name === name);
+      cart.forEach((item, index) => {
+        totalItems += item.qty;
+        totalAmount += item.price * item.qty;
 
-  if (item) {
-    item.qty++;
-  } else {
-    cart.push({ name, price, qty: 1 });
-  }
+        html += `
+          <div class="cart-item">
+            <h3>${item.name}</h3>
+            <div class="cart-meta">Price: ₹${item.price} | Qty: ${item.qty} | Total: ₹${item.price * item.qty}</div>
+            <div class="item-actions">
+              <button class="qty-btn" onclick="changeQty(${index}, 1)">+ Add One</button>
+              <button class="qty-btn" onclick="changeQty(${index}, -1)">- Remove One</button>
+              <button class="remove-btn" onclick="removeItem(${index})">Remove Item</button>
+            </div>
+          </div>
+        `;
+      });
 
-  localStorage.setItem("rn_cart", JSON.stringify(cart));
+      cartContainer.innerHTML = html;
+      document.getElementById("totalItems").innerText = "Total Items: " + totalItems;
+      document.getElementById("totalAmount").innerText = "Estimated Total: ₹" + totalAmount;
+    }
 
-  alert("✅ " + name + " has been successfully added to your cart.\n\nYou can manage it anytime from Cart 🛒");
-}
+    function changeQty(index, change) {
+      let cart = getCart();
+      cart[index].qty += change;
 
-// First click
-function firstAdd(name, price) {
-  addToCart(name, price);
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
 
-  let box = document.getElementById("qty-" + name);
+      saveCart(cart);
+      renderCart();
+    }
 
-  box.innerHTML = `
-    <div class="qty-box">
-      <button class="qty-btn" onclick="changeQty('${name}', -1)">-</button>
-      <input type="number" value="1" class="qty-input"
-      onchange="setQty('${name}', this.value)">
-      <button class="qty-btn" onclick="changeQty('${name}', 1)">+</button>
-    </div>
-  `;
-}
+    function removeItem(index) {
+      let cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      renderCart();
+    }
 
-// Change qty
-function changeQty(name, change) {
-  let cart = JSON.parse(localStorage.getItem("rn_cart")) || [];
-  let item = cart.find(i => i.name === name);
+    function clearCart() {
+      localStorage.removeItem("rn_cart");
+      renderCart();
+    }
 
-  if (!item) return;
+    function sendOrderToWhatsApp() {
+      const name = document.getElementById("custName").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const address = document.getElementById("custAddress").value.trim();
+      const cart = getCart();
 
-  item.qty += change;
+      if (!name || !phone || !address) {
+        alert("कृपया नाम, मोबाइल नंबर और पता भरें");
+        return;
+      }
 
-  if (item.qty <= 0) {
-    cart = cart.filter(i => i.name !== name);
+      if (cart.length === 0) {
+        alert("Cart khaali hai");
+        return;
+      }
 
-    document.getElementById("qty-" + name).innerHTML =
-      `<button class="cart-btn" onclick="firstAdd('${name}', ${item.price})">Add to Cart</button>`;
-  } else {
-    document.querySelector(`#qty-${name} input`).value = item.qty;
-  }
+      let totalAmount = 0;
 
-  localStorage.setItem("rn_cart", JSON.stringify(cart));
-}
+      let message = "नमस्ते 🙏%0A%0A";
+      message += "मुझे ये सामान ऑर्डर करना है:%0A%0A";
 
-// Set qty
-function setQty(name, value) {
-  let cart = JSON.parse(localStorage.getItem("rn_cart")) || [];
-  let item = cart.find(i => i.name === name);
+      cart.forEach((item, i) => {
+        totalAmount += item.price * item.qty;
+        message += (i + 1) + ". " + item.name + " - ₹" + item.price + " x " + item.qty + " = ₹" + (item.price * item.qty) + "%0A";
+      });
 
-  if (!item) return;
+      message += "%0Aकुल आइटम: " + cart.reduce((sum, item) => sum + item.qty, 0);
+      message += "%0Aअनुमानित कुल: ₹" + totalAmount;
+      message += "%0A%0Aनाम: " + name;
+      message += "%0Aमोबाइल: " + phone;
+      message += "%0Aपता: " + address;
+      message += "%0A%0Aकृपया ऑर्डर कन्फर्म करें।";
 
-  item.qty = parseInt(value);
+      window.open("https://wa.me/918574788904?text=" + message, "_blank");
+    }
 
-  if (item.qty <= 0) {
-    cart = cart.filter(i => i.name !== name);
-
-    document.getElementById("qty-" + name).innerHTML =
-      `<button class="cart-btn" onclick="firstAdd('${name}', ${item.price})">Add to Cart</button>`;
-  }
-
-  localStorage.setItem("rn_cart", JSON.stringify(cart));
-}
-
-// Search
-document.getElementById("searchInput").addEventListener("keyup", function() {
-  let value = this.value.toLowerCase();
-  document.querySelectorAll(".product").forEach(p => {
-    let name = p.getAttribute("data-name").toLowerCase();
-    p.style.display = name.includes(value) ? "block" : "none";
-  });
-});
-
-</script>
+    renderCart();
+  </script>
 
 </body>
 </html>
