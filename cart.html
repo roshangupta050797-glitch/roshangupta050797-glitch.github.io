@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cart - Ramayan Kirana Wholesale</title>
+  <title>Cart - RN Kirana Wholesale</title>
   <style>
     * {
       box-sizing: border-box;
@@ -100,11 +100,31 @@
 
     .subtotal {
       font-size: 22px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
     .subtotal strong {
       font-size: 28px;
+    }
+
+    .delivery-line {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .delivery-line strong {
+      font-size: 22px;
+    }
+
+    .final-line {
+      font-size: 22px;
+      margin-bottom: 14px;
+      color: #b12704;
+      font-weight: bold;
+    }
+
+    .final-line strong {
+      font-size: 30px;
     }
 
     .buy-btn {
@@ -139,6 +159,7 @@
       object-fit: contain;
       background: #fff;
       flex-shrink: 0;
+      border-radius: 8px;
     }
 
     .item-info {
@@ -317,6 +338,7 @@
       background: #fff;
       display: block;
       margin-bottom: 10px;
+      border-radius: 8px;
     }
 
     .mini-title {
@@ -414,14 +436,16 @@
   <div class="location-bar">📍 Delivering to Lucknow 226016 - Update location</div>
 
   <div class="green-msg">
-    ✅ Your order is eligible for FREE Delivery.<br>
-    <span>Choose FREE Delivery option at checkout.</span>
+    ✅ Your order is eligible for Delivery.<br>
+    <span>Fixed delivery charge ₹50 will be added.</span>
   </div>
 
   <div class="main-wrap">
 
     <div class="summary-card">
       <div class="subtotal">Subtotal <strong id="subtotalAmount">₹0</strong></div>
+      <div class="delivery-line">Delivery Charges <strong id="deliveryAmount">₹0</strong></div>
+      <div class="final-line">Final Total <strong id="finalAmount">₹0</strong></div>
       <button class="buy-btn" onclick="scrollToOrder()">Proceed to Buy (<span id="buyItemCount">0</span> item<span id="buyPlural">s</span>)</button>
     </div>
 
@@ -434,7 +458,7 @@
       </div>
       <div class="icon-box">
         <div class="icon-circle">🚚</div>
-        <div class="icon-label">Amazon Delivered</div>
+        <div class="icon-label">Fast Delivery</div>
       </div>
     </div>
 
@@ -524,8 +548,12 @@
       const cart = getCart();
       const subtotal = totalCartAmount(cart);
       const items = totalCartQty(cart);
+      const deliveryCharge = cart.length > 0 ? 50 : 0;
+      const finalTotal = subtotal + deliveryCharge;
 
       document.getElementById("subtotalAmount").innerText = formatPrice(subtotal);
+      document.getElementById("deliveryAmount").innerText = formatPrice(deliveryCharge);
+      document.getElementById("finalAmount").innerText = formatPrice(finalTotal);
       document.getElementById("buyItemCount").innerText = items;
       document.getElementById("buyPlural").innerText = items === 1 ? "" : "s";
     }
@@ -551,7 +579,7 @@
                 <div class="item-title">${item.title || item.name}</div>
                 <div class="item-bought">${item.bought || 'Popular product'}</div>
                 <div class="item-price">${formatPrice(item.price)}</div>
-                <div class="delivery-text">FREE delivery <strong>Sun, 12 Apr</strong> on first order</div>
+                <div class="delivery-text">Delivery charge ₹50 will apply to total order</div>
                 <div class="in-stock">In stock</div>
 
                 <div class="qty-row">
@@ -754,7 +782,9 @@
       }
 
       let totalQty = totalCartQty(cart);
-      let totalAmount = totalCartAmount(cart);
+      let subtotalAmount = totalCartAmount(cart);
+      let deliveryCharge = 50;
+      let totalAmount = subtotalAmount + deliveryCharge;
 
       let message = "नमस्ते 🙏%0A%0A";
       message += "मुझे ये सामान ऑर्डर करना है:%0A%0A";
@@ -764,7 +794,9 @@
       });
 
       message += "%0Aकुल आइटम: " + totalQty;
-      message += "%0ASubtotal: ₹" + totalAmount;
+      message += "%0ASubtotal: ₹" + subtotalAmount;
+      message += "%0ADelivery Charges: ₹" + deliveryCharge;
+      message += "%0AFinal Total: ₹" + totalAmount;
       message += "%0A%0Aनाम: " + name;
       message += "%0Aमोबाइल: " + phone;
       message += "%0Aपता: " + address;
@@ -772,8 +804,7 @@
 
       window.open("https://wa.me/918574788904?text=" + message, "_blank");
     }
-
-    function ensureDemoMeta() {
+   function ensureDemoMeta() {
       let cart = getCart();
       let changed = false;
 
