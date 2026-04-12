@@ -1,0 +1,98 @@
+<script>
+const CART_KEY = "ramayanCart";
+const SAVE_KEY = "ramayanSaved";
+
+let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+let saved = JSON.parse(localStorage.getItem(SAVE_KEY)) || [];
+
+const deliveryCharge = 50;
+const whatsappNumber = "918574788904";
+
+function saveAll() {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  localStorage.setItem(SAVE_KEY, JSON.stringify(saved));
+  renderCart();
+}
+
+function changeQty(index, change) {
+  cart[index].quantity += change;
+  if (cart[index].quantity <= 0) cart.splice(index, 1);
+  saveAll();
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  saveAll();
+}
+
+function saveForLater(index) {
+  saved.push(cart[index]);
+  cart.splice(index, 1);
+  saveAll();
+}
+
+function moveToCart(index) {
+  let item = saved[index];
+
+  let exist = cart.find(i => i.name === item.name);
+  if (exist) exist.quantity += item.quantity;
+  else cart.push(item);
+
+  saved.splice(index, 1);
+  saveAll();
+}
+
+function renderCart() {
+  let cartItems = document.getElementById("cartItems");
+  let savedItems = document.getElementById("savedItems");
+  let whatsappBtn = document.getElementById("whatsappOrderBtn");
+
+  let html = "";
+  let subtotal = 0;
+  let message = "Order:%0A%0A";
+
+  cart.forEach((item, index) => {
+    let total = item.price * item.quantity;
+    subtotal += total;
+
+    html += `
+    <div class="cart-item">
+      <b>${item.name}</b><br>
+      ₹${item.price} × ${item.quantity} = ₹${total}
+      <br><br>
+
+      <button onclick="changeQty(${index}, -1)">-</button>
+      <button onclick="changeQty(${index}, 1)">+</button>
+      <button onclick="saveForLater(${index})">Save for Later</button>
+      <button onclick="removeItem(${index})">Remove</button>
+    </div>
+    `;
+
+    message += `${item.name} x ${item.quantity} = ₹${total}%0A`;
+  });
+
+  cartItems.innerHTML = html;
+
+  let grandTotal = subtotal + deliveryCharge;
+
+  whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${message}`;
+
+  // Saved items
+  let savedHTML = "";
+  saved.forEach((item, index) => {
+    savedHTML += `
+    <div class="cart-item">
+      <b>${item.name}</b><br>
+      ₹${item.price}
+
+      <br><br>
+      <button onclick="moveToCart(${index})">Move to Cart</button>
+    </div>
+    `;
+  });
+
+  savedItems.innerHTML = savedHTML;
+}
+
+renderCart();
+    </script>
