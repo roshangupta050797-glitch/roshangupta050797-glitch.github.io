@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toffee Store - Ramayan Kirana</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+  background: #f5f5f5;
+}
+
+.topbar {
+  background: linear-gradient(135deg,#ff4081,#f50057);
+  color: white;
+  text-align: center;
+  padding: 14px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 520px;
+  margin: auto;
+  padding: 12px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 15px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.product-image-wrap {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-image-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.product-info {
+  padding: 12px;
+}
+
+.product-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.mrp {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.add-btn {
+  background: #ff4081;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.cart-controls {
+  display: none;
+  gap: 5px;
+}
+
+.qty-btn {
+  background: #ff4081;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.qty-input {
+  width: 40px;
+  text-align: center;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #ddd;
+}
+
+.cart-btn {
+  background: #ff4081;
+  color: white;
+  padding: 10px;
+  border-radius: 20px;
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">Toffee Store</div>
+
+<div class="container">
+
+<!-- Product 1 -->
+<div class="product-card" data-name="Eclairs Toffee" data-price="120">
+<div class="product-image-wrap">
+<img src="toffee1.jpg">
+</div>
+
+<div class="product-info">
+<div class="product-title">Eclairs Toffee</div>
+<div>Chocolate filled toffee pack</div>
+
+<div>
+<span class="price">₹120</span>
+<span class="mrp">₹140</span>
+</div>
+
+<button class="add-btn" onclick="addToCartCard(this,'Eclairs Toffee',120)">Add to Cart</button>
+
+<div class="cart-controls">
+<button class="qty-btn" onclick="changeQty(this,-1,'Eclairs Toffee',120)">-</button>
+<input class="qty-input" value="1">
+<button class="qty-btn" onclick="changeQty(this,1,'Eclairs Toffee',120)">+</button>
+</div>
+
+</div>
+</div>
+
+<!-- Product 2 -->
+<div class="product-card" data-name="Pulse Candy" data-price="95">
+<div class="product-image-wrap">
+<img src="toffee2.jpg">
+</div>
+
+<div class="product-info">
+<div class="product-title">Pulse Candy</div>
+<div>Kaccha aam flavour</div>
+
+<div>
+<span class="price">₹95</span>
+<span class="mrp">₹110</span>
+</div>
+
+<button class="add-btn" onclick="addToCartCard(this,'Pulse Candy',95)">Add to Cart</button>
+
+<div class="cart-controls">
+<button class="qty-btn" onclick="changeQty(this,-1,'Pulse Candy',95)">-</button>
+<input class="qty-input" value="1">
+<button class="qty-btn" onclick="changeQty(this,1,'Pulse Candy',95)">+</button>
+</div>
+
+</div>
+</div>
+
+<!-- Product 3 -->
+<div class="product-card" data-name="Melody Toffee" data-price="105">
+<div class="product-image-wrap">
+<img src="toffee3.jpg">
+</div>
+
+<div class="product-info">
+<div class="product-title">Melody Toffee</div>
+<div>Chocolate caramel candy</div>
+
+<div>
+<span class="price">₹105</span>
+<span class="mrp">₹120</span>
+</div>
+
+<button class="add-btn" onclick="addToCartCard(this,'Melody Toffee',105)">Add to Cart</button>
+
+<div class="cart-controls">
+<button class="qty-btn" onclick="changeQty(this,-1,'Melody Toffee',105)">-</button>
+<input class="qty-input" value="1">
+<button class="qty-btn" onclick="changeQty(this,1,'Melody Toffee',105)">+</button>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="bottom-bar">
+<div>
+Items: <span id="cartCount">0</span>
+</div>
+<a href="cart.html" class="cart-btn">View Cart</a>
+</div>
+
+<script>
+const CART_KEY = "ramayanCart";
+let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+
+function saveCart(){
+localStorage.setItem(CART_KEY,JSON.stringify(cart));
+updateCart();
+}
+
+function updateCart(){
+let count=0;
+cart.forEach(i=>count+=i.quantity);
+document.getElementById("cartCount").innerText=count;
+}
+
+function addToCart(name,price){
+let item=cart.find(i=>i.name===name);
+if(item){item.quantity++}
+else{cart.push({name,price,quantity:1})}
+saveCart();
+}
+
+function addToCartCard(btn,name,price){
+addToCart(name,price);
+btn.style.display="none";
+let controls=btn.nextElementSibling;
+controls.style.display="flex";
+}
+
+function changeQty(btn,change,name,price){
+let input=btn.parentElement.querySelector("input");
+let qty=parseInt(input.value)||1;
+qty+=change;
+
+if(qty<=0){
+btn.parentElement.style.display="none";
+btn.parentElement.previousElementSibling.style.display="block";
+cart=cart.filter(i=>i.name!==name);
+}else{
+input.value=qty;
+let item=cart.find(i=>i.name===name);
+if(item)item.quantity=qty;
+}
+
+saveCart();
+}
+
+updateCart();
+</script>
+
+</body>
+</html>
