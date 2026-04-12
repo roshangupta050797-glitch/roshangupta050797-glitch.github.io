@@ -1,98 +1,425 @@
-<script>
-const CART_KEY = "ramayanCart";
-const SAVE_KEY = "ramayanSaved";
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart - Ramayan Kirana Wholesale</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-let saved = JSON.parse(localStorage.getItem(SAVE_KEY)) || [];
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #222;
+      padding-bottom: 120px;
+    }
 
-const deliveryCharge = 50;
-const whatsappNumber = "918574788904";
+    .topbar {
+      background: linear-gradient(135deg, #ff6f00, #e91e63);
+      color: white;
+      text-align: center;
+      padding: 16px 12px;
+      font-size: 22px;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
 
-function saveAll() {
-  localStorage.setItem(CART_KEY, JSON.stringify(cart));
-  localStorage.setItem(SAVE_KEY, JSON.stringify(saved));
-  renderCart();
-}
+    .subline {
+      font-size: 13px;
+      font-weight: normal;
+      margin-top: 4px;
+      opacity: 0.95;
+    }
 
-function changeQty(index, change) {
-  cart[index].quantity += change;
-  if (cart[index].quantity <= 0) cart.splice(index, 1);
-  saveAll();
-}
+    .container {
+      max-width: 520px;
+      margin: auto;
+      padding: 12px;
+    }
 
-function removeItem(index) {
-  cart.splice(index, 1);
-  saveAll();
-}
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 8px 0 12px;
+      color: #222;
+    }
 
-function saveForLater(index) {
-  saved.push(cart[index]);
-  cart.splice(index, 1);
-  saveAll();
-}
+    .cart-item {
+      background: #fff;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      border: 1px solid #eee;
+    }
 
-function moveToCart(index) {
-  let item = saved[index];
+    .item-name {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
 
-  let exist = cart.find(i => i.name === item.name);
-  if (exist) exist.quantity += item.quantity;
-  else cart.push(item);
+    .item-price {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 8px;
+    }
 
-  saved.splice(index, 1);
-  saveAll();
-}
+    .item-total {
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #111;
+    }
 
-function renderCart() {
-  let cartItems = document.getElementById("cartItems");
-  let savedItems = document.getElementById("savedItems");
-  let whatsappBtn = document.getElementById("whatsappOrderBtn");
+    .qty-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-  let html = "";
-  let subtotal = 0;
-  let message = "Order:%0A%0A";
+    .qty-btn {
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 50%;
+      background: #ff6f00;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
 
-  cart.forEach((item, index) => {
-    let total = item.price * item.quantity;
-    subtotal += total;
+    .qty-input {
+      width: 52px;
+      height: 34px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      outline: none;
+    }
 
-    html += `
-    <div class="cart-item">
-      <b>${item.name}</b><br>
-      ₹${item.price} × ${item.quantity} = ₹${total}
-      <br><br>
+    .action-btn {
+      border: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      cursor: pointer;
+    }
 
-      <button onclick="changeQty(${index}, -1)">-</button>
-      <button onclick="changeQty(${index}, 1)">+</button>
-      <button onclick="saveForLater(${index})">Save for Later</button>
-      <button onclick="removeItem(${index})">Remove</button>
+    .save-btn {
+      background: #fff3e0;
+      color: #e65100;
+    }
+
+    .move-btn {
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    .remove-btn {
+      margin-left: auto;
+      background: #e53935;
+      color: white;
+    }
+
+    .summary-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 14px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      border: 1px solid #eee;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #111;
+    }
+
+    .empty-cart {
+      background: white;
+      padding: 25px 16px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      border: 1px solid #eee;
+      margin-top: 14px;
+    }
+
+    .saved-section {
+      margin-top: 22px;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+      border-top: 1px solid #ddd;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+      padding: 10px 12px;
+      display: flex;
+      gap: 10px;
+      z-index: 200;
+    }
+
+    .clear-btn {
+      flex: 1;
+      background: #f1f1f1;
+      color: #333;
+      border: none;
+      border-radius: 30px;
+      padding: 13px 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .order-btn {
+      flex: 1.3;
+      background: #25D366;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      border-radius: 30px;
+      padding: 13px 10px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    Your Cart
+    <div class="subline">Ramayan Kirana Wholesale</div>
+  </div>
+
+  <div class="container">
+    <div class="section-title">Cart Items</div>
+    <div id="cartItems"></div>
+    <div id="cartSummary"></div>
+
+    <div class="saved-section">
+      <div class="section-title">Saved for Later</div>
+      <div id="savedItems"></div>
     </div>
-    `;
+  </div>
 
-    message += `${item.name} x ${item.quantity} = ₹${total}%0A`;
-  });
+  <div class="bottom-bar">
+    <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
+    <a class="order-btn" id="whatsappOrderBtn" href="#">Order on WhatsApp</a>
+  </div>
 
-  cartItems.innerHTML = html;
+  <script>
+    const CART_KEY = "ramayanCart";
+    const SAVE_KEY = "ramayanSaved";
+    let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    let saved = JSON.parse(localStorage.getItem(SAVE_KEY)) || [];
+    const deliveryCharge = 50;
+    const whatsappNumber = "918574788904";
 
-  let grandTotal = subtotal + deliveryCharge;
+    function saveAll() {
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+      localStorage.setItem(SAVE_KEY, JSON.stringify(saved));
+      renderCart();
+    }
 
-  whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${message}`;
+    function changeQty(index, change) {
+      cart[index].quantity += change;
 
-  // Saved items
-  let savedHTML = "";
-  saved.forEach((item, index) => {
-    savedHTML += `
-    <div class="cart-item">
-      <b>${item.name}</b><br>
-      ₹${item.price}
+      if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+      }
 
-      <br><br>
-      <button onclick="moveToCart(${index})">Move to Cart</button>
-    </div>
-    `;
-  });
+      saveAll();
+    }
 
-  savedItems.innerHTML = savedHTML;
-}
+    function manualQty(index, value) {
+      let qty = parseInt(value);
 
-renderCart();
-    </script>
+      if (isNaN(qty) || qty < 1) {
+        qty = 1;
+      }
+
+      cart[index].quantity = qty;
+      saveAll();
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      saveAll();
+    }
+
+    function clearCart() {
+      cart = [];
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+      renderCart();
+    }
+
+    function saveForLater(index) {
+      const item = cart[index];
+      const existingSaved = saved.find(i => i.name === item.name);
+
+      if (existingSaved) {
+        existingSaved.quantity += item.quantity;
+      } else {
+        saved.push(item);
+      }
+
+      cart.splice(index, 1);
+      saveAll();
+    }
+
+    function moveToCart(index) {
+      const item = saved[index];
+      const existingCart = cart.find(i => i.name === item.name);
+
+      if (existingCart) {
+        existingCart.quantity += item.quantity;
+      } else {
+        cart.push(item);
+      }
+
+      saved.splice(index, 1);
+      saveAll();
+    }
+
+    function removeSaved(index) {
+      saved.splice(index, 1);
+      saveAll();
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById("cartItems");
+      const cartSummary = document.getElementById("cartSummary");
+      const savedItems = document.getElementById("savedItems");
+      const whatsappBtn = document.getElementById("whatsappOrderBtn");
+
+      if (!cartItems || !cartSummary || !savedItems || !whatsappBtn) return;
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = `
+          <div class="empty-cart">
+            <h3>Your cart is empty</h3>
+            <p style="margin-top:8px;color:#666;">Namkeen, cosmetics ya kisi bhi category ka product add karke yahan dekhein.</p>
+          </div>
+        `;
+        cartSummary.innerHTML = "";
+        whatsappBtn.href = "#";
+      } else {
+        let html = "";
+        let subtotal = 0;
+        let message = "Namaste, mujhe ye order chahiye:%0A%0A";
+
+        cart.forEach((item, index) => {
+          const itemTotal = item.price * item.quantity;
+          subtotal += itemTotal;
+
+          html += `
+            <div class="cart-item">
+              <div class="item-name">${item.name}</div>
+              <div class="item-price">Rate: ₹${item.price}</div>
+              <div class="item-total">Total: ₹${itemTotal}</div>
+
+              <div class="qty-row">
+                <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
+                <input
+                  class="qty-input"
+                  type="number"
+                  min="1"
+                  value="${item.quantity}"
+                  onchange="manualQty(${index}, this.value)"
+                />
+                <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                <button class="action-btn save-btn" onclick="saveForLater(${index})">Save for Later</button>
+                <button class="action-btn remove-btn" onclick="removeItem(${index})">Remove</button>
+              </div>
+            </div>
+          `;
+
+          message += `${index + 1}. ${item.name} - ₹${item.price} × ${item.quantity} = ₹${itemTotal}%0A`;
+        });
+
+        const grandTotal = subtotal + deliveryCharge;
+
+        cartItems.innerHTML = html;
+
+        cartSummary.innerHTML = `
+          <div class="summary-box">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <strong>₹${subtotal}</strong>
+            </div>
+            <div class="summary-row">
+              <span>Delivery Charge</span>
+              <strong>₹${deliveryCharge}</strong>
+            </div>
+            <div class="summary-total">
+              <span>Grand Total</span>
+              <span>₹${grandTotal}</span>
+            </div>
+          </div>
+        `;
+
+        message += `%0ADelivery Charge: ₹${deliveryCharge}%0A`;
+        message += `Grand Total: ₹${grandTotal}%0A%0A`;
+        message += `Name:%0AAddress:%0AMobile:%0A`;
+
+        whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${message}`;
+      }
+
+      if (saved.length === 0) {
+        savedItems.innerHTML = `
+          <div class="empty-cart">
+            <p style="color:#666;">Abhi koi item saved nahi hai.</p>
+          </div>
+        `;
+      } else {
+        let savedHtml = "";
+
+        saved.forEach((item, index) => {
+          savedHtml += `
+            <div class="cart-item">
+              <div class="item-name">${item.name}</div>
+              <div class="item-price">Rate: ₹${item.price}</div>
+              <div class="item-total">Saved Qty: ${item.quantity}</div>
+
+              <div class="qty-row">
+                <button class="action-btn move-btn" onclick="moveToCart(${index})">Move to Cart</button>
+                <button class="action-btn remove-btn" onclick="removeSaved(${index})">Remove</button>
+              </div>
+            </div>
+          `;
+        });
+
+        savedItems.innerHTML = savedHtml;
+      }
+    }
+
+    renderCart();
+  </script>
+</body>
+</html>
