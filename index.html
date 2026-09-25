@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product & Supplier Management</title>
+    <!-- Tailwind CSS for UI design -->
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        .image-preview {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .preview-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-8">📦 Product & Supplier Dashboard</h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Side: Add Product Form -->
+            <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-1 h-fit">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Add New Product</h2>
+                <form id="productForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Product Name</label>
+                        <input type="text" id="pName" required class="w-full mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">Old Price</label>
+                            <input type="number" id="pOldPrice" required class="w-full mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">New Price</label>
+                            <input type="number" id="pNewPrice" required class="w-full mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Multiple Images Upload -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Product Images (Select Multiple)</label>
+                        <input type="file" id="pImages" multiple accept="image/*" class="w-full mt-1 p-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <div id="imagePreviewContainer" class="image-preview"></div>
+                    </div>
+
+                    <!-- Suppliers Loop (1 to 5) -->
+                    <div class="border-t pt-2 mt-4 space-y-3">
+                        <h3 class="text-sm font-bold text-gray-700">Suppliers Details</h3>
+                        
+                        <!-- Supplier 1 to 5 inputs -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="s1Name" placeholder="Supplier 1 Name" class="p-2 border rounded-md text-sm">
+                            <input type="number" id="s1Rate" placeholder="Supplier 1 Rate" class="p-2 border rounded-md text-sm">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="s2Name" placeholder="Supplier 2 Name" class="p-2 border rounded-md text-sm">
+                            <input type="number" id="s2Rate" placeholder="Supplier 2 Rate" class="p-2 border rounded-md text-sm">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="s3Name" placeholder="Supplier 3 Name" class="p-2 border rounded-md text-sm">
+                            <input type="number" id="s3Rate" placeholder="Supplier 3 Rate" class="p-2 border rounded-md text-sm">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="s4Name" placeholder="Supplier 4 Name" class="p-2 border rounded-md text-sm">
+                            <input type="number" id="s4Rate" placeholder="Supplier 4 Rate" class="p-2 border rounded-md text-sm">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="s5Name" placeholder="Supplier 5 Name" class="p-2 border rounded-md text-sm">
+                            <input type="number" id="s5Rate" placeholder="Supplier 5 Rate" class="p-2 border rounded-md text-sm">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white p-2.5 rounded-md font-medium hover:bg-blue-700 transition">Add Product</button>
+                </form>
+            </div>
+
+            <!-- Right Side: Search and Product List -->
+            <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2">
+                <!-- Search Bar -->
+                <div class="mb-6">
+                    <input type="text" id="searchBar" placeholder="🔍 Search products by name..." class="w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none text-lg">
+                </div>
+
+                <!-- Products Display Area -->
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Product Catalog</h2>
+                <div id="productsContainer" class="space-y-6">
+                    <!-- Dynamic products will load here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let products = JSON.parse(localStorage.getItem('myProducts')) || [];
+        let encodedImages = [];
+
+        // Convert uploaded images to base64 strings so they can be saved in LocalStorage
+        document.getElementById('pImages').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            previewContainer.innerHTML = '';
+            encodedImages = [];
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    encodedImages.push(event.target.result);
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.className = 'preview-img';
+                    previewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Form Submit Action
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const newProduct = {
+                id: Date.now(),
+                name: document.getElementById('pName').value,
+                oldPrice: document.getElementById('pOldPrice').value,
+                newPrice: document.getElementById('pNewPrice').value,
+                images: encodedImages.length > 0 ? encodedImages : ['https://placeholder.com'],
+                suppliers: [
+                    { name: document.getElementById('s1Name').value, rate: document.getElementById('s1Rate').value },
+                    { name: document.getElementById('s2Name').value, rate: document.getElementById('s2Rate').value },
+                    { name: document.getElementById('s3Name').value, rate: document.getElementById('s3Rate').value },
+                    { name: document.getElementById('s4Name').value, rate: document.getElementById('s4Rate').value },
+                    { name: document.getElementById('s5Name').value, rate: document.getElementById('s5Rate').value }
+                ].filter(s => s.name || s.rate) // Save only filled suppliers
+            };
+
+            products.push(newProduct);
+            localStorage.setItem('myProducts', JSON.stringify(products));
+            
+            // Reset Form
+            document.getElementById('productForm').reset();
+            document.getElementById('imagePreviewContainer').innerHTML = '';
+            encodedImages = [];
+
+            displayProducts();
+        });
+
+        // Delete Product
+        function deleteProduct(id) {
+            products = products.filter(p => p.id !== id);
+            localStorage.setItem('myProducts', JSON.stringify(products));
+            displayProducts();
+        }
+
+        // Display Products Function
+        function displayProducts(searchTerm = '') {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = '';
+
+            const filteredProducts = products.filter(p => 
+                p.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if(filteredProducts.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-center py-4">No products found.</p>`;
+                return;
+            }
+
+            filteredProducts.forEach(product => {
+                // Images HTML
+                let imagesHTML = product.images.map(img => `<img src="${img}" class="w-20 h-20 object-cover rounded-md border">`).join('');
+                
+                // Suppliers List HTML
+                let suppliersHTML = product.suppliers.map((s, index) => `
+                    <div class="flex justify-between bg-gray-50 p-2 rounded text-sm text-gray-700">
+                        <span><strong>S${index+1}:</strong> ${s.name || 'N/A'}</span>
+                        <span class="font-semibold text-blue-600">₹${s.rate || 0}</span>
+                    </div>
+                    
