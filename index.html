@@ -1,191 +1,300 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product & Supplier Management</title>
-    <!-- Tailwind CSS for UI design -->
-    <script src="https://jsdelivr.net"></script>
-    <style>
-        .image-preview {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-        .preview-img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Product Catalog</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101820; --paper:#F7F5F1; --card:#FFFFFF;
+    --line:#E4E0D8; --accent:#B5652A; --accent-ink:#7C3E14;
+    --teal:#1F5D5B; --muted:#6B6459;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#EFEAE2; --paper:#14181B; --card:#1C2226;
+      --line:#2C3336; --accent:#E2833F; --accent-ink:#F2A868;
+      --teal:#4FA6A0; --muted:#93897B;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#EFEAE2; --paper:#14181B; --card:#1C2226;
+    --line:#2C3336; --accent:#E2833F; --accent-ink:#F2A868;
+    --teal:#4FA6A0; --muted:#93897B;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px; margin:0 auto; padding:28px 20px 60px;}
+  header{margin-bottom:26px;}
+  h1{
+    font-family:'Space Grotesk',system-ui,sans-serif; font-weight:700;
+    font-size:clamp(24px,4vw,34px); margin:0 0 4px; letter-spacing:-0.01em;
+  }
+  .sub{color:var(--muted); font-size:14.5px; margin:0 0 20px;}
+
+  .search-box{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:5;
+    background:var(--paper); padding:6px 0 14px;
+  }
+  .search-box input{
+    width:100%; padding:15px 18px; font-size:16.5px;
+    border:1.5px solid var(--line); border-radius:12px;
+    background:var(--card); color:var(--ink); outline:none;
+    font-family:'Inter',sans-serif; transition:border-color .15s;
+  }
+  .search-box input:focus{border-color:var(--teal);}
+
+  .results{display:flex; flex-direction:column; gap:10px; margin-top:4px;}
+  .hint{color:var(--muted); font-size:13.5px; padding:2px 2px 10px;}
+
+  .row{
+    display:flex; align-items:center; gap:14px; background:var(--card);
+    border:1px solid var(--line); border-radius:12px; padding:12px 14px;
+    cursor:pointer; transition:border-color .15s;
+  }
+  .row:hover{border-color:var(--teal);}
+  .row img.thumb{width:52px; height:52px; border-radius:8px; object-fit:cover; background:var(--line); flex:none;}
+  .row .noimg{width:52px; height:52px; border-radius:8px; background:var(--line); flex:none;}
+  .row .name{font-weight:600; font-size:15.5px;}
+  .row .loc{color:var(--muted); font-size:13px;}
+  .row .rate{margin-left:auto; text-align:right; font-family:'Space Grotesk',sans-serif;}
+  .row .rate .new{font-weight:700; color:var(--teal); font-size:16px;}
+  .row .rate .old{color:var(--muted); text-decoration:line-through; font-size:12.5px;}
+
+  .detail{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px; margin-top:6px;
+  }
+  .detail-head{display:flex; justify-content:space-between; align-items:flex-start; gap:14px;}
+  .detail h2{font-family:'Space Grotesk',sans-serif; margin:0 0 4px; font-size:22px;}
+  .detail .loc-line{color:var(--muted); font-size:14px;}
+  .close-btn{
+    background:none; border:1px solid var(--line); color:var(--muted);
+    border-radius:8px; padding:6px 12px; cursor:pointer; font-size:13px;
+  }
+  .rates-strip{display:flex; gap:20px; margin:16px 0; flex-wrap:wrap;}
+  .rate-pill{background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:10px 16px;}
+  .rate-pill .lbl{font-size:11.5px; color:var(--muted); margin-bottom:2px;}
+  .rate-pill .val{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px;}
+  .rate-pill.new .val{color:var(--teal);}
+  .rate-pill.old .val{color:var(--muted); text-decoration:line-through;}
+
+  .gallery{display:flex; gap:10px; overflow-x:auto; padding:4px 2px 14px;}
+  .gallery img{height:140px; border-radius:10px; object-fit:cover; flex:none;}
+
+  .desc{font-size:14.5px; line-height:1.65; color:var(--ink); margin:6px 0 18px; max-width:70ch;}
+
+  .suppliers{display:flex; flex-wrap:wrap; gap:8px;}
+  .sup-chip{
+    background:var(--paper); border:1px solid var(--line); border-radius:20px;
+    padding:7px 14px; font-size:13.5px;
+  }
+
+  details.form{margin-top:30px; border:1px solid var(--line); border-radius:14px; background:var(--card); overflow:hidden;}
+  details.form summary{
+    padding:16px 18px; cursor:pointer; font-weight:600; font-size:15px;
+    list-style:none; display:flex; align-items:center; justify-content:space-between;
+  }
+  details.form summary::-webkit-details-marker{display:none;}
+  details.form summary::after{content:'+'; font-size:20px; color:var(--muted);}
+  details.form[open] summary::after{content:'−';}
+  .form-body{padding:6px 18px 20px; display:flex; flex-direction:column; gap:12px;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media(max-width:520px){.grid2{grid-template-columns:1fr;}}
+  label{font-size:12.5px; color:var(--muted); margin-bottom:4px; display:block;}
+  input[type=text], input[type=number], textarea{
+    width:100%; padding:11px 13px; border:1px solid var(--line); border-radius:9px;
+    background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; font-size:14.5px; outline:none;
+  }
+  input:focus, textarea:focus{border-color:var(--teal);}
+  textarea{resize:vertical; min-height:80px;}
+  .field img.prev{width:44px;height:44px;border-radius:6px;object-fit:cover;margin:6px 6px 0 0;}
+  .img-preview{display:flex; flex-wrap:wrap;}
+  .save-btn{
+    margin-top:6px; background:var(--teal); color:#fff; border:none; border-radius:10px;
+    padding:13px; font-weight:600; font-size:15px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .save-btn:active{opacity:.85;}
+  .msg{font-size:13px; color:var(--teal); min-height:18px;}
+</style>
 </head>
-<body class="bg-gray-100 min-h-screen p-4 md:p-8">
+<body>
+<div class="wrap">
+  <header>
+    <h1>Product Catalog</h1>
+    <p class="sub">Search by product name to pull up rate, location, suppliers, photos aur description.</p>
+  </header>
 
-    <div class="max-w-6xl mx-auto">
-        <!-- Header -->
-        <h1 class="text-3xl font-bold text-gray-800 text-center mb-8">📦 Product & Supplier Dashboard</h1>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Product ka naam likhein..." autocomplete="off">
+  </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Left Side: Add Product Form -->
-            <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-1 h-fit">
-                <h2 class="text-xl font-semibold mb-4 text-gray-700">Add New Product</h2>
-                <form id="productForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">Product Name</label>
-                        <input type="text" id="pName" required class="w-full mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none">
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-600">Old Price</label>
-                            <input type="number" id="pOldPrice" required class="w-full mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-600">New Price</label>
-                            <input type="number" id="pNewPrice" required class="w-full mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none">
-                        </div>
-                    </div>
+  <div id="resultsArea"></div>
 
-                    <!-- Multiple Images Upload -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600">Product Images (Select Multiple)</label>
-                        <input type="file" id="pImages" multiple accept="image/*" class="w-full mt-1 p-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                        <div id="imagePreviewContainer" class="image-preview"></div>
-                    </div>
-
-                    <!-- Suppliers Loop (1 to 5) -->
-                    <div class="border-t pt-2 mt-4 space-y-3">
-                        <h3 class="text-sm font-bold text-gray-700">Suppliers Details</h3>
-                        
-                        <!-- Supplier 1 to 5 inputs -->
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="s1Name" placeholder="Supplier 1 Name" class="p-2 border rounded-md text-sm">
-                            <input type="number" id="s1Rate" placeholder="Supplier 1 Rate" class="p-2 border rounded-md text-sm">
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="s2Name" placeholder="Supplier 2 Name" class="p-2 border rounded-md text-sm">
-                            <input type="number" id="s2Rate" placeholder="Supplier 2 Rate" class="p-2 border rounded-md text-sm">
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="s3Name" placeholder="Supplier 3 Name" class="p-2 border rounded-md text-sm">
-                            <input type="number" id="s3Rate" placeholder="Supplier 3 Rate" class="p-2 border rounded-md text-sm">
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="s4Name" placeholder="Supplier 4 Name" class="p-2 border rounded-md text-sm">
-                            <input type="number" id="s4Rate" placeholder="Supplier 4 Rate" class="p-2 border rounded-md text-sm">
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="s5Name" placeholder="Supplier 5 Name" class="p-2 border rounded-md text-sm">
-                            <input type="number" id="s5Rate" placeholder="Supplier 5 Rate" class="p-2 border rounded-md text-sm">
-                        </div>
-                    </div>
-
-                    <button type="submit" class="w-full bg-blue-600 text-white p-2.5 rounded-md font-medium hover:bg-blue-700 transition">Add Product</button>
-                </form>
-            </div>
-
-            <!-- Right Side: Search and Product List -->
-            <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2">
-                <!-- Search Bar -->
-                <div class="mb-6">
-                    <input type="text" id="searchBar" placeholder="🔍 Search products by name..." class="w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none text-lg">
-                </div>
-
-                <!-- Products Display Area -->
-                <h2 class="text-xl font-semibold mb-4 text-gray-700">Product Catalog</h2>
-                <div id="productsContainer" class="space-y-6">
-                    <!-- Dynamic products will load here -->
-                </div>
-            </div>
-        </div>
+  <details class="form" id="formToggle">
+    <summary>Naya product save karein</summary>
+    <div class="form-body">
+      <div class="grid2">
+        <div class="field"><label>Product ka naam</label><input type="text" id="f_name"></div>
+        <div class="field"><label>Product ka location</label><input type="text" id="f_loc"></div>
+        <div class="field"><label>Old rate</label><input type="number" id="f_old"></div>
+        <div class="field"><label>New rate</label><input type="number" id="f_new"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Supplier 1</label><input type="text" id="s1"></div>
+        <div class="field"><label>Supplier 2</label><input type="text" id="s2"></div>
+        <div class="field"><label>Supplier 3</label><input type="text" id="s3"></div>
+        <div class="field"><label>Supplier 4</label><input type="text" id="s4"></div>
+      </div>
+      <div class="field"><label>Supplier 5</label><input type="text" id="s5"></div>
+      <div class="field">
+        <label>Product ki photos (multiple select karein)</label>
+        <input type="file" id="f_images" accept="image/*" multiple>
+        <div class="img-preview" id="imgPreview"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea id="f_desc" placeholder="Product ke baare mein detail likhein..."></textarea></div>
+      <button class="save-btn" id="saveBtn">Product save karein</button>
+      <div class="msg" id="saveMsg"></div>
     </div>
+  </details>
+</div>
 
-    <!-- JavaScript Logic -->
-    <script>
-        let products = JSON.parse(localStorage.getItem('myProducts')) || [];
-        let encodedImages = [];
+<script>
+const KEY = 'products_v1';
+let pendingImages = [];
 
-        // Convert uploaded images to base64 strings so they can be saved in LocalStorage
-        document.getElementById('pImages').addEventListener('change', function(e) {
-            const files = e.target.files;
-            const previewContainer = document.getElementById('imagePreviewContainer');
-            previewContainer.innerHTML = '';
-            encodedImages = [];
+function loadAll(){
+  try{ return JSON.parse(localStorage.getItem(KEY) || '[]'); }catch(e){ return []; }
+}
+function saveAll(list){
+  try{ localStorage.setItem(KEY, JSON.stringify(list)); }catch(e){}
+}
 
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    encodedImages.push(event.target.result);
-                    const img = document.createElement('img');
-                    img.src = event.target.result;
-                    img.className = 'preview-img';
-                    previewContainer.appendChild(img);
-                }
-                reader.readAsDataURL(file);
-            });
-        });
+const imgInput = document.getElementById('f_images');
+const imgPreview = document.getElementById('imgPreview');
+imgInput.addEventListener('change', async ()=>{
+  pendingImages = [];
+  imgPreview.innerHTML = '';
+  const files = Array.from(imgInput.files);
+  for(const file of files){
+    const dataUrl = await new Promise(res=>{
+      const r = new FileReader();
+      r.onload = ()=>res(r.result);
+      r.readAsDataURL(file);
+    });
+    pendingImages.push(dataUrl);
+    const im = document.createElement('img');
+    im.src = dataUrl; im.className = 'prev';
+    imgPreview.appendChild(im);
+  }
+});
 
-        // Form Submit Action
-        document.getElementById('productForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+document.getElementById('saveBtn').addEventListener('click', ()=>{
+  const name = document.getElementById('f_name').value.trim();
+  if(!name){
+    document.getElementById('saveMsg').textContent = 'Product ka naam zaroori hai.';
+    return;
+  }
+  const product = {
+    id: Date.now().toString(),
+    name,
+    location: document.getElementById('f_loc').value.trim(),
+    oldRate: document.getElementById('f_old').value,
+    newRate: document.getElementById('f_new').value,
+    suppliers: [
+      document.getElementById('s1').value.trim(),
+      document.getElementById('s2').value.trim(),
+      document.getElementById('s3').value.trim(),
+      document.getElementById('s4').value.trim(),
+      document.getElementById('s5').value.trim(),
+    ].filter(Boolean),
+    images: pendingImages,
+    description: document.getElementById('f_desc').value.trim()
+  };
+  const list = loadAll();
+  list.push(product);
+  saveAll(list);
+  document.getElementById('saveMsg').textContent = 'Saved! Ab search box mein "' + name + '" likh kar dekhein.';
+  ['f_name','f_loc','f_old','f_new','s1','s2','s3','s4','s5','f_desc'].forEach(id=>document.getElementById(id).value='');
+  imgInput.value=''; pendingImages=[]; imgPreview.innerHTML='';
+  document.getElementById('formToggle').open = false;
+  renderResults('');
+});
 
-            const newProduct = {
-                id: Date.now(),
-                name: document.getElementById('pName').value,
-                oldPrice: document.getElementById('pOldPrice').value,
-                newPrice: document.getElementById('pNewPrice').value,
-                images: encodedImages.length > 0 ? encodedImages : ['https://placeholder.com'],
-                suppliers: [
-                    { name: document.getElementById('s1Name').value, rate: document.getElementById('s1Rate').value },
-                    { name: document.getElementById('s2Name').value, rate: document.getElementById('s2Rate').value },
-                    { name: document.getElementById('s3Name').value, rate: document.getElementById('s3Rate').value },
-                    { name: document.getElementById('s4Name').value, rate: document.getElementById('s4Rate').value },
-                    { name: document.getElementById('s5Name').value, rate: document.getElementById('s5Rate').value }
-                ].filter(s => s.name || s.rate) // Save only filled suppliers
-            };
+function escapeHtml(s){
+  return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
-            products.push(newProduct);
-            localStorage.setItem('myProducts', JSON.stringify(products));
-            
-            // Reset Form
-            document.getElementById('productForm').reset();
-            document.getElementById('imagePreviewContainer').innerHTML = '';
-            encodedImages = [];
+let openId = null;
 
-            displayProducts();
-        });
+function renderResults(query){
+  const list = loadAll();
+  const area = document.getElementById('resultsArea');
+  const q = query.trim().toLowerCase();
+  const matches = q ? list.filter(p=>p.name.toLowerCase().includes(q)) : list;
 
-        // Delete Product
-        function deleteProduct(id) {
-            products = products.filter(p => p.id !== id);
-            localStorage.setItem('myProducts', JSON.stringify(products));
-            displayProducts();
-        }
+  if(openId){
+    const p = list.find(x=>x.id===openId);
+    if(p){ area.innerHTML = detailHtml(p); attachDetailEvents(); return; }
+    openId = null;
+  }
 
-        // Display Products Function
-        function displayProducts(searchTerm = '') {
-            const container = document.getElementById('productsContainer');
-            container.innerHTML = '';
+  if(!list.length){
+    area.innerHTML = '<p class="hint">Abhi koi product save nahi hua. Neeche form kholkar pehla product add karein.</p>';
+    return;
+  }
+  if(q && !matches.length){
+    area.innerHTML = '<p class="hint">"'+escapeHtml(query)+'" naam se koi product nahi mila.</p>';
+    return;
+  }
 
-            const filteredProducts = products.filter(p => 
-                p.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+  area.innerHTML = '<div class="results">' + matches.map(p=>{
+    const thumb = p.images && p.images[0] ? '<img class="thumb" src="'+p.images[0]+'">' : '<div class="noimg"></div>';
+    return '<div class="row" data-id="'+p.id+'">'+thumb+
+      '<div><div class="name">'+escapeHtml(p.name)+'</div><div class="loc">'+escapeHtml(p.location||'—')+'</div></div>'+
+      '<div class="rate">'+(p.newRate?'<div class="new">₹'+escapeHtml(p.newRate)+'</div>':'')+(p.oldRate?'<div class="old">₹'+escapeHtml(p.oldRate)+'</div>':'')+'</div>'+
+      '</div>';
+  }).join('') + '</div>';
 
-            if(filteredProducts.length === 0) {
-                container.innerHTML = `<p class="text-gray-500 text-center py-4">No products found.</p>`;
-                return;
-            }
+  area.querySelectorAll('.row').forEach(row=>{
+    row.addEventListener('click', ()=>{ openId = row.dataset.id; renderResults(document.getElementById('searchInput').value); });
+  });
+}
 
-            filteredProducts.forEach(product => {
-                // Images HTML
-                let imagesHTML = product.images.map(img => `<img src="${img}" class="w-20 h-20 object-cover rounded-md border">`).join('');
-                
-                // Suppliers List HTML
-                let suppliersHTML = product.suppliers.map((s, index) => `
-                    <div class="flex justify-between bg-gray-50 p-2 rounded text-sm text-gray-700">
-                        <span><strong>S${index+1}:</strong> ${s.name || 'N/A'}</span>
-                        <span class="font-semibold text-blue-600">₹${s.rate || 0}</span>
-                    </div>
-                    
+function detailHtml(p){
+  const gallery = (p.images||[]).map(src=>'<img src="'+src+'">').join('');
+  const suppliers = (p.suppliers||[]).map(s=>'<span class="sup-chip">'+escapeHtml(s)+'</span>').join('');
+  return '<div class="detail">'+
+    '<div class="detail-head"><div><h2>'+escapeHtml(p.name)+'</h2><div class="loc-line">'+escapeHtml(p.location||'—')+'</div></div>'+
+    '<button class="close-btn" id="closeDetail">✕ Band karein</button></div>'+
+    '<div class="rates-strip">'+
+      (p.newRate?'<div class="rate-pill new"><div class="lbl">New rate</div><div class="val">₹'+escapeHtml(p.newRate)+'</div></div>':'')+
+      (p.oldRate?'<div class="rate-pill old"><div class="lbl">Old rate</div><div class="val">₹'+escapeHtml(p.oldRate)+'</div></div>':'')+
+    '</div>'+
+    (gallery?'<div class="gallery">'+gallery+'</div>':'')+
+    (p.description?'<p class="desc">'+escapeHtml(p.description)+'</p>':'')+
+    (suppliers?'<div class="suppliers">'+suppliers+'</div>':'')+
+  '</div>';
+}
+
+function attachDetailEvents(){
+  const btn = document.getElementById('closeDetail');
+  if(btn) btn.addEventListener('click', ()=>{ openId = null; renderResults(document.getElementById('searchInput').value); });
+}
+
+document.getElementById('searchInput').addEventListener('input', (e)=>{
+  openId = null;
+  renderResults(e.target.value);
+});
+
+renderResults('');
+</script>
+</body>
+</html>
