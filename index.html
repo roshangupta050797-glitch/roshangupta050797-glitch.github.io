@@ -4,297 +4,1894 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Product Catalog</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
-  :root{
-    --ink:#101820; --paper:#F7F5F1; --card:#FFFFFF;
-    --line:#E4E0D8; --accent:#B5652A; --accent-ink:#7C3E14;
-    --teal:#1F5D5B; --muted:#6B6459;
-    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --ink:#EFEAE2; --paper:#14181B; --card:#1C2226;
-      --line:#2C3336; --accent:#E2833F; --accent-ink:#F2A868;
-      --teal:#4FA6A0; --muted:#93897B;
-    }
-  }
-  :root[data-theme="dark"]{
-    --ink:#EFEAE2; --paper:#14181B; --card:#1C2226;
-    --line:#2C3336; --accent:#E2833F; --accent-ink:#F2A868;
-    --teal:#4FA6A0; --muted:#93897B;
-  }
-  *{box-sizing:border-box;}
-  html,body{height:100%;}
-  body{
-    margin:0; background:var(--paper); color:var(--ink);
-    font-family:'Inter',system-ui,-apple-system,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:1000px; margin:0 auto; padding:28px 20px 60px;}
-  header{margin-bottom:26px;}
-  h1{
-    font-family:'Space Grotesk',system-ui,sans-serif; font-weight:700;
-    font-size:clamp(24px,4vw,34px); margin:0 0 4px; letter-spacing:-0.01em;
-  }
-  .sub{color:var(--muted); font-size:14.5px; margin:0 0 20px;}
+:root{
+  --ink:#101820;
+  --paper:#F7F5F1;
+  --card:#FFFFFF;
+  --line:#E4E0D8;
+  --accent:#B5652A;
+  --accent-ink:#7C3E14;
+  --teal:#1F5D5B;
+  --muted:#6B6459;
+  box-sizing:border-box;
+}
 
-  .search-box{
-    position:sticky; top:env(safe-area-inset-top,0px); z-index:5;
-    background:var(--paper); padding:6px 0 14px;
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#EFEAE2;
+    --paper:#14181B;
+    --card:#1C2226;
+    --line:#2C3336;
+    --accent:#E2833F;
+    --accent-ink:#F2A868;
+    --teal:#4FA6A0;
+    --muted:#93897B;
   }
-  .search-box input{
-    width:100%; padding:15px 18px; font-size:16.5px;
-    border:1.5px solid var(--line); border-radius:12px;
-    background:var(--card); color:var(--ink); outline:none;
-    font-family:'Inter',sans-serif; transition:border-color .15s;
-  }
-  .search-box input:focus{border-color:var(--teal);}
+}
 
-  .results{display:flex; flex-direction:column; gap:10px; margin-top:4px;}
-  .hint{color:var(--muted); font-size:13.5px; padding:2px 2px 10px;}
+:root[data-theme="dark"]{
+  --ink:#EFEAE2;
+  --paper:#14181B;
+  --card:#1C2226;
+  --line:#2C3336;
+  --accent:#E2833F;
+  --accent-ink:#F2A868;
+  --teal:#4FA6A0;
+  --muted:#93897B;
+}
 
-  .row{
-    display:flex; align-items:center; gap:14px; background:var(--card);
-    border:1px solid var(--line); border-radius:12px; padding:12px 14px;
-    cursor:pointer; transition:border-color .15s;
-  }
-  .row:hover{border-color:var(--teal);}
-  .row img.thumb{width:52px; height:52px; border-radius:8px; object-fit:cover; background:var(--line); flex:none;}
-  .row .noimg{width:52px; height:52px; border-radius:8px; background:var(--line); flex:none;}
-  .row .name{font-weight:600; font-size:15.5px;}
-  .row .loc{color:var(--muted); font-size:13px;}
-  .row .rate{margin-left:auto; text-align:right; font-family:'Space Grotesk',sans-serif;}
-  .row .rate .new{font-weight:700; color:var(--teal); font-size:16px;}
-  .row .rate .old{color:var(--muted); text-decoration:line-through; font-size:12.5px;}
+*{
+  box-sizing:border-box;
+}
 
-  .detail{
-    background:var(--card); border:1px solid var(--line); border-radius:16px;
-    padding:22px; margin-top:6px;
-  }
-  .detail-head{display:flex; justify-content:space-between; align-items:flex-start; gap:14px;}
-  .detail h2{font-family:'Space Grotesk',sans-serif; margin:0 0 4px; font-size:22px;}
-  .detail .loc-line{color:var(--muted); font-size:14px;}
-  .close-btn{
-    background:none; border:1px solid var(--line); color:var(--muted);
-    border-radius:8px; padding:6px 12px; cursor:pointer; font-size:13px;
-  }
-  .rates-strip{display:flex; gap:20px; margin:16px 0; flex-wrap:wrap;}
-  .rate-pill{background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:10px 16px;}
-  .rate-pill .lbl{font-size:11.5px; color:var(--muted); margin-bottom:2px;}
-  .rate-pill .val{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px;}
-  .rate-pill.new .val{color:var(--teal);}
-  .rate-pill.old .val{color:var(--muted); text-decoration:line-through;}
+html,body{
+  height:100%;
+}
 
-  .gallery{display:flex; gap:10px; overflow-x:auto; padding:4px 2px 14px;}
-  .gallery img{height:140px; border-radius:10px; object-fit:cover; flex:none;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
 
-  .desc{font-size:14.5px; line-height:1.65; color:var(--ink); margin:6px 0 18px; max-width:70ch;}
+.wrap{
+  max-width:1000px;
+  margin:0 auto;
+  padding:28px 20px 60px;
+}
 
-  .suppliers{display:flex; flex-wrap:wrap; gap:8px;}
-  .sup-chip{
-    background:var(--paper); border:1px solid var(--line); border-radius:20px;
-    padding:7px 14px; font-size:13.5px;
+header{
+  margin-bottom:26px;
+}
+
+h1{
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  font-weight:700;
+  font-size:clamp(24px,4vw,34px);
+  margin:0 0 4px;
+}
+
+.sub{
+  color:var(--muted);
+  font-size:14.5px;
+  margin:0 0 20px;
+}
+
+/* SEARCH */
+
+.search-box{
+  position:sticky;
+  top:env(safe-area-inset-top,0px);
+  z-index:5;
+  background:var(--paper);
+  padding:6px 0 14px;
+}
+
+.search-box input{
+  width:100%;
+  padding:15px 18px;
+  font-size:16.5px;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  background:var(--card);
+  color:var(--ink);
+  outline:none;
+}
+
+.search-box input:focus{
+  border-color:var(--teal);
+}
+
+/* RESULTS */
+
+.results{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:4px;
+}
+
+.hint{
+  color:var(--muted);
+  font-size:13.5px;
+  padding:2px 2px 10px;
+}
+
+.row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px 14px;
+  cursor:pointer;
+  transition:.15s;
+}
+
+.row:hover{
+  border-color:var(--teal);
+}
+
+.row img.thumb,
+.row .noimg{
+  width:52px;
+  height:52px;
+  border-radius:8px;
+  object-fit:cover;
+  background:var(--line);
+  flex:none;
+}
+
+.row .name{
+  font-weight:600;
+  font-size:15.5px;
+}
+
+.row .loc{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.row .rate{
+  margin-left:auto;
+  text-align:right;
+  font-family:'Space Grotesk',sans-serif;
+}
+
+.row .rate .new{
+  font-weight:700;
+  color:var(--teal);
+  font-size:16px;
+}
+
+.row .rate .old{
+  color:var(--muted);
+  text-decoration:line-through;
+  font-size:12.5px;
+}
+
+/* DETAIL */
+
+.detail{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:22px;
+  margin-top:6px;
+}
+
+.detail-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+}
+
+.detail h2{
+  font-family:'Space Grotesk',sans-serif;
+  margin:0 0 4px;
+  font-size:22px;
+}
+
+.detail .loc-line{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.detail-actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.close-btn,
+.edit-btn{
+  border-radius:8px;
+  padding:7px 12px;
+  cursor:pointer;
+  font-size:13px;
+  font-family:'Inter',sans-serif;
+}
+
+.close-btn{
+  background:none;
+  border:1px solid var(--line);
+  color:var(--muted);
+}
+
+.edit-btn{
+  background:var(--teal);
+  color:white;
+  border:1px solid var(--teal);
+}
+
+/* RATES */
+
+.rates-strip{
+  display:flex;
+  gap:20px;
+  margin:16px 0;
+  flex-wrap:wrap;
+}
+
+.rate-pill{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px 16px;
+}
+
+.rate-pill .lbl{
+  font-size:11.5px;
+  color:var(--muted);
+  margin-bottom:2px;
+}
+
+.rate-pill .val{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:19px;
+}
+
+.rate-pill.new .val{
+  color:var(--teal);
+}
+
+.rate-pill.old .val{
+  color:var(--muted);
+  text-decoration:line-through;
+}
+
+/* GALLERY */
+
+.gallery{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:4px 2px 14px;
+}
+
+.gallery-item{
+  position:relative;
+  flex:none;
+  cursor:pointer;
+}
+
+.gallery img{
+  width:180px;
+  height:140px;
+  border-radius:10px;
+  object-fit:cover;
+  display:block;
+  transition:transform .15s;
+}
+
+.gallery img:hover{
+  transform:scale(1.02);
+}
+
+.photo-label{
+  position:absolute;
+  bottom:7px;
+  left:7px;
+  background:rgba(0,0,0,.65);
+  color:white;
+  padding:4px 8px;
+  border-radius:6px;
+  font-size:11px;
+}
+
+/* DESCRIPTION */
+
+.desc-box{
+  margin:6px 0 18px;
+}
+
+.desc-title{
+  font-size:13px;
+  font-weight:600;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+.desc{
+  font-size:14.5px;
+  line-height:1.65;
+  color:var(--ink);
+  margin:0;
+  max-width:70ch;
+  white-space:pre-wrap;
+  cursor:pointer;
+}
+
+.desc:hover{
+  color:var(--teal);
+}
+
+.description-more{
+  color:var(--teal);
+  font-size:12px;
+  margin-top:5px;
+}
+
+/* SUPPLIERS */
+
+.suppliers-title{
+  font-size:13px;
+  font-weight:600;
+  color:var(--muted);
+  margin-bottom:7px;
+}
+
+.suppliers{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.sup-chip{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:7px 14px;
+  font-size:13.5px;
+}
+
+/* FORM */
+
+details.form{
+  margin-top:30px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--card);
+  overflow:hidden;
+}
+
+details.form summary{
+  padding:16px 18px;
+  cursor:pointer;
+  font-weight:600;
+  font-size:15px;
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+details.form summary::-webkit-details-marker{
+  display:none;
+}
+
+details.form summary::after{
+  content:'+';
+  font-size:20px;
+  color:var(--muted);
+}
+
+details.form[open] summary::after{
+  content:'−';
+}
+
+.form-body{
+  padding:6px 18px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+@media(max-width:520px){
+  .grid2{
+    grid-template-columns:1fr;
   }
 
-  details.form{margin-top:30px; border:1px solid var(--line); border-radius:14px; background:var(--card); overflow:hidden;}
-  details.form summary{
-    padding:16px 18px; cursor:pointer; font-weight:600; font-size:15px;
-    list-style:none; display:flex; align-items:center; justify-content:space-between;
+  .detail-head{
+    flex-direction:column;
   }
-  details.form summary::-webkit-details-marker{display:none;}
-  details.form summary::after{content:'+'; font-size:20px; color:var(--muted);}
-  details.form[open] summary::after{content:'−';}
-  .form-body{padding:6px 18px 20px; display:flex; flex-direction:column; gap:12px;}
-  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
-  @media(max-width:520px){.grid2{grid-template-columns:1fr;}}
-  label{font-size:12.5px; color:var(--muted); margin-bottom:4px; display:block;}
-  input[type=text], input[type=number], textarea{
-    width:100%; padding:11px 13px; border:1px solid var(--line); border-radius:9px;
-    background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; font-size:14.5px; outline:none;
+
+  .detail-actions{
+    justify-content:flex-start;
   }
-  input:focus, textarea:focus{border-color:var(--teal);}
-  textarea{resize:vertical; min-height:80px;}
-  .field img.prev{width:44px;height:44px;border-radius:6px;object-fit:cover;margin:6px 6px 0 0;}
-  .img-preview{display:flex; flex-wrap:wrap;}
-  .save-btn{
-    margin-top:6px; background:var(--teal); color:#fff; border:none; border-radius:10px;
-    padding:13px; font-weight:600; font-size:15px; cursor:pointer; font-family:'Inter',sans-serif;
+
+  .gallery img{
+    width:160px;
+    height:125px;
   }
-  .save-btn:active{opacity:.85;}
-  .msg{font-size:13px; color:var(--teal); min-height:18px;}
+}
+
+label{
+  font-size:12.5px;
+  color:var(--muted);
+  margin-bottom:4px;
+  display:block;
+}
+
+input[type=text],
+input[type=number],
+textarea{
+  width:100%;
+  padding:11px 13px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-size:14.5px;
+  outline:none;
+}
+
+input:focus,
+textarea:focus{
+  border-color:var(--teal);
+}
+
+textarea{
+  resize:vertical;
+  min-height:80px;
+}
+
+.field img.prev{
+  width:60px;
+  height:60px;
+  border-radius:7px;
+  object-fit:cover;
+  margin:6px 6px 0 0;
+}
+
+.img-preview{
+  display:flex;
+  flex-wrap:wrap;
+}
+
+.save-btn{
+  margin-top:6px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:13px;
+  font-weight:600;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.cancel-edit-btn{
+  background:none;
+  border:1px solid var(--line);
+  color:var(--muted);
+  border-radius:10px;
+  padding:13px;
+  font-weight:600;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.form-buttons{
+  display:flex;
+  gap:10px;
+}
+
+.form-buttons button{
+  flex:1;
+}
+
+.msg{
+  font-size:13px;
+  color:var(--teal);
+  min-height:18px;
+}
+
+/* IMAGE MODAL */
+
+.image-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.88);
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.image-modal.show{
+  display:flex;
+}
+
+.modal-image{
+  max-width:94vw;
+  max-height:88vh;
+  object-fit:contain;
+  border-radius:8px;
+  user-select:none;
+}
+
+.modal-close{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:none;
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  font-size:25px;
+  cursor:pointer;
+}
+
+.modal-prev,
+.modal-next{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  border:none;
+  background:rgba(255,255,255,.15);
+  color:white;
+  font-size:26px;
+  cursor:pointer;
+}
+
+.modal-prev{
+  left:15px;
+}
+
+.modal-next{
+  right:15px;
+}
+
+.modal-counter{
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  color:white;
+  background:rgba(0,0,0,.55);
+  padding:6px 12px;
+  border-radius:15px;
+  font-size:13px;
+}
+
+@media(max-width:520px){
+  .modal-prev,
+  .modal-next{
+    width:40px;
+    height:40px;
+  }
+
+  .modal-prev{
+    left:8px;
+  }
+
+  .modal-next{
+    right:8px;
+  }
+}
 </style>
 </head>
+
 <body>
+
 <div class="wrap">
-  <header>
-    <h1>Product Catalog</h1>
-    <p class="sub">Search by product name to pull up rate, location, suppliers, photos aur description.</p>
-  </header>
 
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Product ka naam likhein..." autocomplete="off">
-  </div>
+<header>
+  <h1>Product Catalog</h1>
+  <p class="sub">
+    Product ka naam search karein — rate, location, suppliers, photos aur description dekhein.
+  </p>
+</header>
 
-  <div id="resultsArea"></div>
-
-  <details class="form" id="formToggle">
-    <summary>Naya product save karein</summary>
-    <div class="form-body">
-      <div class="grid2">
-        <div class="field"><label>Product ka naam</label><input type="text" id="f_name"></div>
-        <div class="field"><label>Product ka location</label><input type="text" id="f_loc"></div>
-        <div class="field"><label>Old rate</label><input type="number" id="f_old"></div>
-        <div class="field"><label>New rate</label><input type="number" id="f_new"></div>
-      </div>
-      <div class="grid2">
-        <div class="field"><label>Supplier 1</label><input type="text" id="s1"></div>
-        <div class="field"><label>Supplier 2</label><input type="text" id="s2"></div>
-        <div class="field"><label>Supplier 3</label><input type="text" id="s3"></div>
-        <div class="field"><label>Supplier 4</label><input type="text" id="s4"></div>
-      </div>
-      <div class="field"><label>Supplier 5</label><input type="text" id="s5"></div>
-      <div class="field">
-        <label>Product ki photos (multiple select karein)</label>
-        <input type="file" id="f_images" accept="image/*" multiple>
-        <div class="img-preview" id="imgPreview"></div>
-      </div>
-      <div class="field"><label>Description</label><textarea id="f_desc" placeholder="Product ke baare mein detail likhein..."></textarea></div>
-      <button class="save-btn" id="saveBtn">Product save karein</button>
-      <div class="msg" id="saveMsg"></div>
-    </div>
-  </details>
+<div class="search-box">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Product ka naam likhein..."
+    autocomplete="off"
+  >
 </div>
 
+<div id="resultsArea"></div>
+
+<!-- ADD / EDIT FORM -->
+
+<details class="form" id="formToggle">
+  <summary id="formTitle">Naya product save karein</summary>
+
+  <div class="form-body">
+
+    <div class="grid2">
+
+      <div class="field">
+        <label>Product ka naam</label>
+        <input type="text" id="f_name">
+      </div>
+
+      <div class="field">
+        <label>Product ka location</label>
+        <input type="text" id="f_loc">
+      </div>
+
+      <div class="field">
+        <label>Old rate</label>
+        <input type="number" id="f_old">
+      </div>
+
+      <div class="field">
+        <label>New rate</label>
+        <input type="number" id="f_new">
+      </div>
+
+    </div>
+
+    <div class="grid2">
+
+      <div class="field">
+        <label>Supplier 1</label>
+        <input type="text" id="s1">
+      </div>
+
+      <div class="field">
+        <label>Supplier 2</label>
+        <input type="text" id="s2">
+      </div>
+
+      <div class="field">
+        <label>Supplier 3</label>
+        <input type="text" id="s3">
+      </div>
+
+      <div class="field">
+        <label>Supplier 4</label>
+        <input type="text" id="s4">
+      </div>
+
+    </div>
+
+    <div class="field">
+      <label>Supplier 5</label>
+      <input type="text" id="s5">
+    </div>
+
+    <div class="field">
+
+      <label>Product ki photos</label>
+
+      <input
+        type="file"
+        id="f_images"
+        accept="image/*"
+        multiple
+      >
+
+      <div class="img-preview" id="imgPreview"></div>
+
+    </div>
+
+    <div class="field">
+
+      <label>Description</label>
+
+      <textarea
+        id="f_desc"
+        placeholder="Product ke baare mein detail likhein..."
+      ></textarea>
+
+    </div>
+
+    <div class="form-buttons">
+
+      <button
+        class="save-btn"
+        id="saveBtn"
+      >
+        Product save karein
+      </button>
+
+      <button
+        class="cancel-edit-btn"
+        id="cancelEditBtn"
+        style="display:none;"
+      >
+        Cancel
+      </button>
+
+    </div>
+
+    <div class="msg" id="saveMsg"></div>
+
+  </div>
+</details>
+
+</div>
+
+<!-- IMAGE FULL SCREEN MODAL -->
+
+<div class="image-modal" id="imageModal">
+
+  <button class="modal-close" id="modalClose">×</button>
+
+  <button class="modal-prev" id="modalPrev">‹</button>
+
+  <img
+    class="modal-image"
+    id="modalImage"
+    src=""
+    alt="Product photo"
+  >
+
+  <button class="modal-next" id="modalNext">›</button>
+
+  <div class="modal-counter" id="modalCounter"></div>
+
+</div>
+
+
 <script>
+
 const KEY = 'products_v1';
+
 let pendingImages = [];
-
-function loadAll(){
-  try{ return JSON.parse(localStorage.getItem(KEY) || '[]'); }catch(e){ return []; }
-}
-function saveAll(list){
-  try{ localStorage.setItem(KEY, JSON.stringify(list)); }catch(e){}
-}
-
-const imgInput = document.getElementById('f_images');
-const imgPreview = document.getElementById('imgPreview');
-imgInput.addEventListener('change', async ()=>{
-  pendingImages = [];
-  imgPreview.innerHTML = '';
-  const files = Array.from(imgInput.files);
-  for(const file of files){
-    const dataUrl = await new Promise(res=>{
-      const r = new FileReader();
-      r.onload = ()=>res(r.result);
-      r.readAsDataURL(file);
-    });
-    pendingImages.push(dataUrl);
-    const im = document.createElement('img');
-    im.src = dataUrl; im.className = 'prev';
-    imgPreview.appendChild(im);
-  }
-});
-
-document.getElementById('saveBtn').addEventListener('click', ()=>{
-  const name = document.getElementById('f_name').value.trim();
-  if(!name){
-    document.getElementById('saveMsg').textContent = 'Product ka naam zaroori hai.';
-    return;
-  }
-  const product = {
-    id: Date.now().toString(),
-    name,
-    location: document.getElementById('f_loc').value.trim(),
-    oldRate: document.getElementById('f_old').value,
-    newRate: document.getElementById('f_new').value,
-    suppliers: [
-      document.getElementById('s1').value.trim(),
-      document.getElementById('s2').value.trim(),
-      document.getElementById('s3').value.trim(),
-      document.getElementById('s4').value.trim(),
-      document.getElementById('s5').value.trim(),
-    ].filter(Boolean),
-    images: pendingImages,
-    description: document.getElementById('f_desc').value.trim()
-  };
-  const list = loadAll();
-  list.push(product);
-  saveAll(list);
-  document.getElementById('saveMsg').textContent = 'Saved! Ab search box mein "' + name + '" likh kar dekhein.';
-  ['f_name','f_loc','f_old','f_new','s1','s2','s3','s4','s5','f_desc'].forEach(id=>document.getElementById(id).value='');
-  imgInput.value=''; pendingImages=[]; imgPreview.innerHTML='';
-  document.getElementById('formToggle').open = false;
-  renderResults('');
-});
-
-function escapeHtml(s){
-  return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
+let editingId = null;
 let openId = null;
 
-function renderResults(query){
+let modalImages = [];
+let modalIndex = 0;
+
+
+/* =========================
+   LOCAL STORAGE
+========================= */
+
+function loadAll(){
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(KEY) || '[]'
+    );
+
+  }catch(e){
+
+    return [];
+
+  }
+
+}
+
+
+function saveAll(list){
+
+  try{
+
+    localStorage.setItem(
+      KEY,
+      JSON.stringify(list)
+    );
+
+  }catch(e){
+
+    alert(
+      'Data save nahi ho paya. Photos ka size bahut bada ho sakta hai.'
+    );
+
+  }
+
+}
+
+
+/* =========================
+   HTML ESCAPE
+========================= */
+
+function escapeHtml(s){
+
+  return String(s || '').replace(
+    /[&<>"']/g,
+    c => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[c])
+  );
+
+}
+
+
+/* =========================
+   IMAGE INPUT
+========================= */
+
+const imgInput =
+  document.getElementById('f_images');
+
+const imgPreview =
+  document.getElementById('imgPreview');
+
+
+imgInput.addEventListener(
+  'change',
+  async () => {
+
+    pendingImages = [];
+
+    imgPreview.innerHTML = '';
+
+    const files =
+      Array.from(imgInput.files);
+
+    for(const file of files){
+
+      const dataUrl =
+        await new Promise(resolve => {
+
+          const reader =
+            new FileReader();
+
+          reader.onload =
+            () => resolve(reader.result);
+
+          reader.readAsDataURL(file);
+
+        });
+
+      pendingImages.push(dataUrl);
+
+      const image =
+        document.createElement('img');
+
+      image.src = dataUrl;
+
+      image.className = 'prev';
+
+      imgPreview.appendChild(image);
+
+    }
+
+  }
+);
+
+
+/* =========================
+   FORM HELPERS
+========================= */
+
+function resetForm(){
+
+  [
+    'f_name',
+    'f_loc',
+    'f_old',
+    'f_new',
+    's1',
+    's2',
+    's3',
+    's4',
+    's5',
+    'f_desc'
+  ].forEach(id => {
+
+    document.getElementById(id).value = '';
+
+  });
+
+  imgInput.value = '';
+
+  pendingImages = [];
+
+  imgPreview.innerHTML = '';
+
+  editingId = null;
+
+  document.getElementById(
+    'formTitle'
+  ).textContent =
+    'Naya product save karein';
+
+  document.getElementById(
+    'saveBtn'
+  ).textContent =
+    'Product save karein';
+
+  document.getElementById(
+    'cancelEditBtn'
+  ).style.display = 'none';
+
+  document.getElementById(
+    'saveMsg'
+  ).textContent = '';
+
+}
+
+
+/* =========================
+   EDIT PRODUCT
+========================= */
+
+function startEdit(id){
+
   const list = loadAll();
-  const area = document.getElementById('resultsArea');
-  const q = query.trim().toLowerCase();
-  const matches = q ? list.filter(p=>p.name.toLowerCase().includes(q)) : list;
+
+  const p =
+    list.find(x => x.id === id);
+
+  if(!p) return;
+
+  editingId = id;
+
+  document.getElementById(
+    'f_name'
+  ).value = p.name || '';
+
+  document.getElementById(
+    'f_loc'
+  ).value = p.location || '';
+
+  document.getElementById(
+    'f_old'
+  ).value = p.oldRate || '';
+
+  document.getElementById(
+    'f_new'
+  ).value = p.newRate || '';
+
+  const suppliers =
+    p.suppliers || [];
+
+  document.getElementById('s1').value =
+    suppliers[0] || '';
+
+  document.getElementById('s2').value =
+    suppliers[1] || '';
+
+  document.getElementById('s3').value =
+    suppliers[2] || '';
+
+  document.getElementById('s4').value =
+    suppliers[3] || '';
+
+  document.getElementById('s5').value =
+    suppliers[4] || '';
+
+  document.getElementById(
+    'f_desc'
+  ).value =
+    p.description || '';
+
+  /*
+    Existing photos ko pendingImages mein
+    rakha ja raha hai, taaki edit save karne
+    par purani photos delete na ho.
+  */
+
+  pendingImages =
+    Array.isArray(p.images)
+      ? [...p.images]
+      : [];
+
+  imgPreview.innerHTML = '';
+
+  pendingImages.forEach(src => {
+
+    const image =
+      document.createElement('img');
+
+    image.src = src;
+
+    image.className = 'prev';
+
+    imgPreview.appendChild(image);
+
+  });
+
+  document.getElementById(
+    'formTitle'
+  ).textContent =
+    'Product edit karein';
+
+  document.getElementById(
+    'saveBtn'
+  ).textContent =
+    'Changes save karein';
+
+  document.getElementById(
+    'cancelEditBtn'
+  ).style.display =
+    'block';
+
+  document.getElementById(
+    'formToggle'
+  ).open = true;
+
+  window.scrollTo({
+    top:
+      document.getElementById(
+        'formToggle'
+      ).offsetTop - 20,
+    behavior:'smooth'
+  });
+
+}
+
+
+/* =========================
+   SAVE / UPDATE
+========================= */
+
+document.getElementById(
+  'saveBtn'
+).addEventListener(
+  'click',
+  () => {
+
+    const name =
+      document.getElementById(
+        'f_name'
+      ).value.trim();
+
+    if(!name){
+
+      document.getElementById(
+        'saveMsg'
+      ).textContent =
+        'Product ka naam zaroori hai.';
+
+      return;
+
+    }
+
+    const productData = {
+
+      name,
+
+      location:
+        document.getElementById(
+          'f_loc'
+        ).value.trim(),
+
+      oldRate:
+        document.getElementById(
+          'f_old'
+        ).value,
+
+      newRate:
+        document.getElementById(
+          'f_new'
+        ).value,
+
+      suppliers:[
+        document.getElementById('s1').value.trim(),
+        document.getElementById('s2').value.trim(),
+        document.getElementById('s3').value.trim(),
+        document.getElementById('s4').value.trim(),
+        document.getElementById('s5').value.trim()
+      ].filter(Boolean),
+
+      images:[...pendingImages],
+
+      description:
+        document.getElementById(
+          'f_desc'
+        ).value.trim()
+
+    };
+
+
+    const list = loadAll();
+
+
+    /* UPDATE */
+
+    if(editingId){
+
+      const index =
+        list.findIndex(
+          p => p.id === editingId
+        );
+
+      if(index !== -1){
+
+        list[index] = {
+
+          ...list[index],
+
+          ...productData
+
+        };
+
+      }
+
+      saveAll(list);
+
+      document.getElementById(
+        'saveMsg'
+      ).textContent =
+        'Product successfully update ho gaya.';
+
+      openId = editingId;
+
+      resetForm();
+
+      document.getElementById(
+        'formToggle'
+      ).open = false;
+
+      renderResults(
+        document.getElementById(
+          'searchInput'
+        ).value
+      );
+
+      return;
+
+    }
+
+
+    /* NEW PRODUCT */
+
+    const newProduct = {
+
+      id:
+        Date.now().toString(),
+
+      ...productData
+
+    };
+
+
+    list.push(newProduct);
+
+    saveAll(list);
+
+    document.getElementById(
+      'saveMsg'
+    ).textContent =
+      'Product saved successfully. Ab search box mein naam likhein.';
+
+
+    resetForm();
+
+    document.getElementById(
+      'formToggle'
+    ).open = false;
+
+    /*
+      Important:
+      Save karne ke baad item automatically
+      screen par nahi aayega.
+      User ko search karna padega.
+    */
+
+    openId = null;
+
+    document.getElementById(
+      'searchInput'
+    ).value = '';
+
+    renderResults('');
+
+  }
+);
+
+
+/* =========================
+   CANCEL EDIT
+========================= */
+
+document.getElementById(
+  'cancelEditBtn'
+).addEventListener(
+  'click',
+  () => {
+
+    resetForm();
+
+    document.getElementById(
+      'formToggle'
+    ).open = false;
+
+  }
+);
+
+
+/* =========================
+   RESULT RENDER
+========================= */
+
+function renderResults(query){
+
+  const list = loadAll();
+
+  const area =
+    document.getElementById(
+      'resultsArea'
+    );
+
+  const q =
+    query.trim().toLowerCase();
+
+
+  /*
+    IMPORTANT:
+    Empty search = kuch bhi show nahi hoga.
+  */
+
+  if(!q){
+
+    openId = null;
+
+    area.innerHTML =
+      '<p class="hint">' +
+      'Product dekhne ke liye upar search box mein product ka naam likhein.' +
+      '</p>';
+
+    return;
+
+  }
+
+
+  const matches =
+    list.filter(
+      p =>
+        (p.name || '')
+          .toLowerCase()
+          .includes(q)
+    );
+
+
+  if(!matches.length){
+
+    area.innerHTML =
+      '<p class="hint">"' +
+      escapeHtml(query) +
+      '" naam se koi product nahi mila.</p>';
+
+    return;
+
+  }
+
+
+  /*
+    Agar detail open hai
+  */
 
   if(openId){
-    const p = list.find(x=>x.id===openId);
-    if(p){ area.innerHTML = detailHtml(p); attachDetailEvents(); return; }
+
+    const p =
+      matches.find(
+        x => x.id === openId
+      );
+
+    if(p){
+
+      area.innerHTML =
+        detailHtml(p);
+
+      attachDetailEvents();
+
+      return;
+
+    }
+
     openId = null;
+
   }
 
-  if(!list.length){
-    area.innerHTML = '<p class="hint">Abhi koi product save nahi hua. Neeche form kholkar pehla product add karein.</p>';
-    return;
-  }
-  if(q && !matches.length){
-    area.innerHTML = '<p class="hint">"'+escapeHtml(query)+'" naam se koi product nahi mila.</p>';
-    return;
-  }
 
-  area.innerHTML = '<div class="results">' + matches.map(p=>{
-    const thumb = p.images && p.images[0] ? '<img class="thumb" src="'+p.images[0]+'">' : '<div class="noimg"></div>';
-    return '<div class="row" data-id="'+p.id+'">'+thumb+
-      '<div><div class="name">'+escapeHtml(p.name)+'</div><div class="loc">'+escapeHtml(p.location||'—')+'</div></div>'+
-      '<div class="rate">'+(p.newRate?'<div class="new">₹'+escapeHtml(p.newRate)+'</div>':'')+(p.oldRate?'<div class="old">₹'+escapeHtml(p.oldRate)+'</div>':'')+'</div>'+
-      '</div>';
-  }).join('') + '</div>';
+  area.innerHTML =
+    '<div class="results">' +
 
-  area.querySelectorAll('.row').forEach(row=>{
-    row.addEventListener('click', ()=>{ openId = row.dataset.id; renderResults(document.getElementById('searchInput').value); });
-  });
+    matches.map(p => {
+
+      const thumb =
+        p.images &&
+        p.images[0]
+
+          ? '<img class="thumb" src="' +
+            p.images[0] +
+            '" alt="">'
+
+          : '<div class="noimg"></div>';
+
+
+      return (
+
+        '<div class="row" data-id="' +
+        escapeHtml(p.id) +
+        '">' +
+
+          thumb +
+
+          '<div>' +
+
+            '<div class="name">' +
+              escapeHtml(p.name) +
+  '</div>' +
+
+            '<div class="loc">' +
+              escapeHtml(
+                p.location || '—'
+              ) +
+            '</div>' +
+
+          '</div>' +
+
+          '<div class="rate">' +
+
+            (
+              p.newRate
+              ? '<div class="new">₹' +
+                escapeHtml(p.newRate) +
+                '</div>'
+              : ''
+            ) +
+
+            (
+              p.oldRate
+              ? '<div class="old">₹' +
+                escapeHtml(p.oldRate) +
+                '</div>'
+              : ''
+            ) +
+
+          '</div>' +
+
+        '</div>'
+
+      );
+
+    }).join('') +
+
+    '</div>';
+
+
+  area
+    .querySelectorAll('.row')
+    .forEach(row => {
+
+      row.addEventListener(
+        'click',
+        () => {
+
+          openId =
+            row.dataset.id;
+
+          renderResults(
+            document.getElementById(
+              'searchInput'
+            ).value
+          );
+
+        }
+      );
+
+    });
+
 }
+
+
+/* =========================
+   DETAIL HTML
+========================= */
 
 function detailHtml(p){
-  const gallery = (p.images||[]).map(src=>'<img src="'+src+'">').join('');
-  const suppliers = (p.suppliers||[]).map(s=>'<span class="sup-chip">'+escapeHtml(s)+'</span>').join('');
-  return '<div class="detail">'+
-    '<div class="detail-head"><div><h2>'+escapeHtml(p.name)+'</h2><div class="loc-line">'+escapeHtml(p.location||'—')+'</div></div>'+
-    '<button class="close-btn" id="closeDetail">✕ Band karein</button></div>'+
-    '<div class="rates-strip">'+
-      (p.newRate?'<div class="rate-pill new"><div class="lbl">New rate</div><div class="val">₹'+escapeHtml(p.newRate)+'</div></div>':'')+
-      (p.oldRate?'<div class="rate-pill old"><div class="lbl">Old rate</div><div class="val">₹'+escapeHtml(p.oldRate)+'</div></div>':'')+
-    '</div>'+
-    (gallery?'<div class="gallery">'+gallery+'</div>':'')+
-    (p.description?'<p class="desc">'+escapeHtml(p.description)+'</p>':'')+
-    (suppliers?'<div class="suppliers">'+suppliers+'</div>':'')+
-  '</div>';
+
+  const gallery =
+    (p.images || [])
+      .map(
+        (src,index) =>
+
+          '<div class="gallery-item" ' +
+          'data-image-index="' +
+          index +
+          '">' +
+
+            '<img src="' +
+            src +
+            '" alt="Product photo ' +
+            (index + 1) +
+            '">' +
+
+            '<span class="photo-label">' +
+              'Photo ' +
+              (index + 1) +
+            '</span>' +
+
+          '</div>'
+
+      )
+      .join('');
+
+
+  const suppliers =
+    (p.suppliers || [])
+      .map(
+        s =>
+          '<span class="sup-chip">' +
+          escapeHtml(s) +
+          '</span>'
+      )
+      .join('');
+
+
+  return (
+
+    '<div class="detail">' +
+
+      '<div class="detail-head">' +
+
+        '<div>' +
+
+          '<h2>' +
+            escapeHtml(p.name) +
+          '</h2>' +
+
+          '<div class="loc-line">' +
+            escapeHtml(
+              p.location || '—'
+            ) +
+          '</div>' +
+
+        '</div>' +
+
+        '<div class="detail-actions">' +
+
+          '<button ' +
+            'class="edit-btn" ' +
+            'id="editDetail">' +
+            '✎ Edit karein' +
+          '</button>' +
+
+          '<button ' +
+            'class="close-btn" ' +
+            'id="closeDetail">' +
+            '✕ Band karein' +
+          '</button>' +
+
+        '</div>' +
+
+      '</div>' +
+
+
+      '<div class="rates-strip">' +
+
+        (
+          p.newRate
+          ? '<div class="rate-pill new">' +
+              '<div class="lbl">New rate</div>' +
+              '<div class="val">₹' +
+                escapeHtml(p.newRate) +
+              '</div>' +
+            '</div>'
+          : ''
+        ) +
+
+        (
+          p.oldRate
+          ? '<div class="rate-pill old">' +
+              '<div class="lbl">Old rate</div>' +
+              '<div class="val">₹' +
+                escapeHtml(p.oldRate) +
+              '</div>' +
+            '</div>'
+          : ''
+        ) +
+
+      '</div>' +
+
+
+      (
+        gallery
+        ? '<div>' +
+
+            '<div class="suppliers-title">' +
+              'Photos — kisi photo par click karke bada dekhein' +
+            '</div>' +
+
+            '<div class="gallery">' +
+              gallery +
+            '</div>' +
+
+          '</div>'
+        : ''
+      ) +
+
+
+      (
+        p.description
+        ? '<div class="desc-box">' +
+
+            '<div class="desc-title">' +
+              'Description' +
+            '</div>' +
+
+            '<p class="desc" id="descriptionText">' +
+              escapeHtml(p.description) +
+            '</p>' +
+
+            '<div class="description-more">' +
+              'Description par click karke poora text dekhein.' +
+            '</div>' +
+
+          '</div>'
+        : ''
+      ) +
+
+
+      (
+        suppliers
+        ? '<div>' +
+
+            '<div class="suppliers-title">' +
+              'Suppliers' +
+            '</div>' +
+
+            '<div class="suppliers">' +
+              suppliers +
+            '</div>' +
+
+          '</div>'
+        : ''
+      ) +
+
+    '</div>'
+
+  );
+
 }
+
+
+/* =========================
+   DETAIL EVENTS
+========================= */
 
 function attachDetailEvents(){
-  const btn = document.getElementById('closeDetail');
-  if(btn) btn.addEventListener('click', ()=>{ openId = null; renderResults(document.getElementById('searchInput').value); });
+
+  const closeBtn =
+    document.getElementById(
+      'closeDetail'
+    );
+
+  if(closeBtn){
+
+    closeBtn.addEventListener(
+      'click',
+      () => {
+
+        openId = null;
+
+        renderResults(
+          document.getElementById(
+            'searchInput'
+          ).value
+        );
+
+      }
+    );
+
+  }
+
+
+  const editBtn =
+    document.getElementById(
+      'editDetail'
+    );
+
+  if(editBtn){
+
+    editBtn.addEventListener(
+      'click',
+      () => {
+
+        startEdit(openId);
+
+      }
+    );
+
+  }
+
+
+  /*
+    PHOTO CLICK
+  */
+
+  document
+    .querySelectorAll(
+      '.gallery-item'
+    )
+    .forEach(item => {
+
+      item.addEventListener(
+        'click',
+        () => {
+
+          const index =
+            Number(
+              item.dataset.imageIndex
+            );
+
+          const p =
+            loadAll().find(
+              x => x.id === openId
+            );
+
+          if(!p) return;
+
+          openImageViewer(
+            p.images || [],
+            index
+          );
+
+        }
+      );
+
+    });
+
+
+  /*
+    DESCRIPTION CLICK
+  */
+
+  const desc =
+    document.getElementById(
+      'descriptionText'
+    );
+
+  if(desc){
+
+    desc.addEventListener(
+      'click',
+      () => {
+
+        alert(
+          desc.textContent
+        );
+
+      }
+    );
+
+  }
+
 }
 
-document.getElementById('searchInput').addEventListener('input', (e)=>{
-  openId = null;
-  renderResults(e.target.value);
-});
+
+/* =========================
+   IMAGE VIEWER
+========================= */
+
+const imageModal =
+  document.getElementById(
+    'imageModal'
+  );
+
+const modalImage =
+  document.getElementById(
+    'modalImage'
+  );
+
+const modalCounter =
+  document.getElementById(
+    'modalCounter'
+  );
+
+
+function openImageViewer(
+  images,
+  index
+){
+
+  if(!images.length) return;
+
+  modalImages =
+    images;
+
+  modalIndex =
+    index;
+
+  updateModal();
+
+  imageModal.classList.add(
+    'show'
+  );
+
+  document.body.style.overflow =
+    'hidden';
+
+}
+
+
+function updateModal(){
+
+  if(!modalImages.length)
+    return;
+
+  modalImage.src =
+    modalImages[modalIndex];
+
+  modalCounter.textContent =
+    (modalIndex + 1) +
+    ' / ' +
+    modalImages.length;
+
+}
+
+
+function closeImageViewer(){
+
+  imageModal.classList.remove(
+    'show'
+  );
+
+  document.body.style.overflow =
+    '';
+
+}
+
+
+function nextImage(){
+
+  if(!modalImages.length)
+    return;
+
+  modalIndex =
+    (modalIndex + 1) %
+    modalImages.length;
+
+  updateModal();
+
+}
+
+
+function previousImage(){
+
+  if(!modalImages.length)
+    return;
+
+  modalIndex =
+    (modalIndex - 1 +
+      modalImages.length) %
+    modalImages.length;
+
+  updateModal();
+
+}
+
+
+document.getElementById(
+  'modalClose'
+).addEventListener(
+  'click',
+  closeImageViewer
+);
+
+
+document.getElementById(
+  'modalNext'
+).addEventListener(
+  'click',
+  nextImage
+);
+
+
+document.getElementById(
+  'modalPrev'
+).addEventListener(
+  'click',
+  previousImage
+);
+
+
+/*
+  Modal ke bahar click
+*/
+
+imageModal.addEventListener(
+  'click',
+  e => {
+
+    if(e.target === imageModal){
+
+      closeImageViewer();
+
+    }
+
+  }
+);
+
+
+/*
+  Keyboard controls
+*/
+
+document.addEventListener(
+  'keydown',
+  e => {
+
+    if(!imageModal.classList.contains('show'))
+      return;
+
+    if(e.key === 'Escape')
+      closeImageViewer();
+
+    if(e.key === 'ArrowRight')
+      nextImage();
+
+    if(e.key === 'ArrowLeft')
+      previousImage();
+
+  }
+);
+
+
+/* =========================
+   SEARCH
+========================= */
+
+document.getElementById(
+  'searchInput'
+).addEventListener(
+  'input',
+  e => {
+
+    openId = null;
+
+    renderResults(
+      e.target.value
+    );
+
+  }
+);
+
+
+/* =========================
+   INITIAL
+========================= */
+
+/*
+  Page load par saved products
+  automatically show nahi honge.
+*/
 
 renderResults('');
+
 </script>
+
 </body>
 </html>
